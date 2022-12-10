@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Chiplet的定义由于摩尔定律的经济效益降低，Chiplet技术应运而生。Chiplet是指将不同工艺制程、不同功能、不同材质的模块化芯片，通过先进封装技术集成到一个系统级芯片（SoC），将原先设计在一个Soc 中的芯片，在设计时就按照不同的功能进行拆分，再根据需要封装集成。Chiplet 能提高芯片良率、设计效率和降低成本。 Chiplet和服务拆分这让我联想到在软件架构发展中，随着业务复杂度">
+<meta name="keywords" content="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chiplet，硬件领域的服务拆分">
+<meta property="og:url" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/index.html">
+<meta property="og:site_name" content="东门屿">
+<meta property="og:description" content="Chiplet的定义由于摩尔定律的经济效益降低，Chiplet技术应运而生。Chiplet是指将不同工艺制程、不同功能、不同材质的模块化芯片，通过先进封装技术集成到一个系统级芯片（SoC），将原先设计在一个Soc 中的芯片，在设计时就按照不同的功能进行拆分，再根据需要封装集成。Chiplet 能提高芯片良率、设计效率和降低成本。 Chiplet和服务拆分这让我联想到在软件架构发展中，随着业务复杂度">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210103145134.png">
+<meta property="og:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210135200302.png">
+<meta property="og:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210140328325.png">
+<meta property="og:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210140626553.png">
+<meta property="og:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210140941418.png">
+<meta property="og:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210141051423.png">
+<meta property="og:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210141121364.png">
+<meta property="og:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210153317196.png">
+<meta property="og:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210155532075.png">
+<meta property="og:updated_time" content="2022-12-10T09:16:20.211Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chiplet，硬件领域的服务拆分">
+<meta name="twitter:description" content="Chiplet的定义由于摩尔定律的经济效益降低，Chiplet技术应运而生。Chiplet是指将不同工艺制程、不同功能、不同材质的模块化芯片，通过先进封装技术集成到一个系统级芯片（SoC），将原先设计在一个Soc 中的芯片，在设计时就按照不同的功能进行拆分，再根据需要封装集成。Chiplet 能提高芯片良率、设计效率和降低成本。 Chiplet和服务拆分这让我联想到在软件架构发展中，随着业务复杂度">
+<meta name="twitter:image" content="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210103145134.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '473EBY24LB',
+      apiKey: 'c5b13ea44f24e9c46ec515b70a0b354a',
+      indexName: 'East door island',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/">
+
+
+
+
+
+  <title>Chiplet，硬件领域的服务拆分 | 东门屿</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6e8a99bb1d9d0ffd8cf061e4aa447c03";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">东门屿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sarieli">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="东门屿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Chiplet，硬件领域的服务拆分</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-12-10T17:15:30+08:00">
+                2022-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2022/12/10/Chiplet，硬件领域的服务拆分/" class="leancloud_visitors" data-flag-title="Chiplet，硬件领域的服务拆分">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Chiplet的定义"><a href="#Chiplet的定义" class="headerlink" title="Chiplet的定义"></a>Chiplet的定义</h1><p>由于摩尔定律的经济效益降低，Chiplet技术应运而生。Chiplet是指将不同工艺制程、不同功能、不同材质的模块化芯片，通过先进封装技术集成到一个系统级芯片（SoC），将原先设计在一个Soc 中的芯片，在设计时就按照不同的功能进行拆分，再根据需要封装集成。Chiplet 能提高芯片良率、设计效率和降低成本。<br><img src="/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210103145134.png" alt=""></p>
+<h1 id="Chiplet和服务拆分"><a href="#Chiplet和服务拆分" class="headerlink" title="Chiplet和服务拆分"></a>Chiplet和服务拆分</h1><p>这让我联想到在软件架构发展中，随着业务复杂度的增长和快速迭代的需求，也经历过从单体应用到服务拆分的过程。下面是一些联想到的共同点。</p>
+<ul>
+<li>单个 SoC 对应单体应用，拆分后不同功能模块的小芯片对应不同功能的系统服务</li>
+<li>单个 SoC 设计周期长，对应单体应用开发时间长。使用 Chiplet 后就可以对不同功能模块的小芯片做设计和复用，与服务拆分后各个功能模块的系统服务可以快速迭代、互不干扰和方便横向扩容是一致的。</li>
+<li>制程越先进的芯片，流片成本越高。芯片越大，出现缺陷时要从圆晶上剔除的面积越大，所以使用 Chiplet 可以提高良率，降低成本。复杂业务的单体应用的稳定性治理，出现问题时的定位和修复，从概率上讲也比服务拆分后的小应用复杂和困难，潜在的风险更大。</li>
+<li>与传统的SoC要求统一制程，各部分要同步迭代不同，Chiplet 的小芯片可以使用不同的材质，如Si、GaN、SiC、InP，不同的制程，如7nm、10nm、28nm、45nm，能更好地发挥不同芯片的优势，比如模拟芯片不需要先进制程，使用先进制程反而会有问题。单体应用拆分成不同服务模块后，各个模块可以根据自己的特性，使用不同的编程语言、部署方式等。各个服务模块可以有自己的迭代周期，保证兼容即可。<h1 id="先进封装和服务间通信"><a href="#先进封装和服务间通信" class="headerlink" title="先进封装和服务间通信"></a>先进封装和服务间通信</h1>软件架构中对单体应用进行服务拆分后，最重要的问题就是各个服务之间如何进行通信。类似地，Chiplet 技术的引入，也对先进封装提出了更高的要求，要实现 Chiplet 的信号传输，就要求发展出高密度、大带宽布线的先进封装技术。</li>
+</ul>
+<p>软件架构中经历了 SOA、微服务、服务网格的演变。SOA 通常使用 ESB，SOA 的问题是各个服务之间没有统一的通信标准、ESB 成本高、过于中心化。后来，微服务为服务化结构制定了标准，淘汰了 SOA，目前国内主流微服务架构是 Spring Cloud 和 Spring Cloud Alibaba。不同的服务间需要使用相同的协议和数据格式进行通信。硬件中的数据都是0和1，没有数据格式的问题，所以只有协议的问题。2022年3月，半导体和科技巨头联合组成 UCIe 联盟董事会，旨在推广通用芯粒互连技术（Universal Chiplet Interconnect Express），在芯片封装层面确立互联互通的统一标准，满足客户对可定制封装要求。<br><img src="/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210135200302.png" alt=""><br>根据 UCIE 联盟发布的 Chiplet 白皮书，UCIE 联盟支持了市面上主流的四种封装方式，分别为：</p>
+<ol>
+<li>MCM：将芯片间的金属连线埋入封装基板中。<br><img src="/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210140328325.png" alt=""></li>
+<li>利用硅桥连接芯片，并将硅桥嵌入封装基板中，如：Intel EMIB 方案。<br><img src="/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210140626553.png" alt=""></li>
+<li>使用硅中介层（Si Interposer）连接芯片并进行重新布线，再将硅中介层封装到基板上，如：台积电 CoWoS 方案。其中又分为三种<ul>
+<li>CoWoS-S：使用硅中介层连接小芯片，可以支持超高集成密度，价格昂贵，通常用于集成HBM等高速高带宽内存芯片。</li>
+<li><img src="/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210140941418.png" alt=""></li>
+<li>CoWoS-R：基于CoWoS-S技术，引入InFO技术中的RDL（Redistribution Layer），RDL 中介层由聚合物和铜迹线组成，成本更低，互联密度也更低。</li>
+<li><img src="/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210141051423.png" alt=""></li>
+<li>CoWoS-L：在CoWoS-S和InFO技术的基础上，引入LSI（Local Silicon Interconnect）技术。在RDL中插入硅桥，仅在芯片互联部分使用硅片。成本和性能介于CoWoS-S和CoWoS-R之间</li>
+<li><img src="/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210141121364.png" alt=""></li>
+</ul>
+</li>
+<li>使用扇出型中介层进行重布线，仅在芯片连接处使用硅桥连接，如：日月光 FOCoS-B 方案。<br><img src="/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210153317196.png" alt=""><br>微服务中实例体量大时，复杂的网络拓扑结构是致命的短板，所以引入链路追踪接口对调用过程进行管理。为解决服务间通信的复杂度，2017年提出服务网格，经历过几个阶段。最开始是在业务代码中自己进行访问控制，如重试策略。然后在进程内引入开源SDK，如OpenFeign、Hystrix等，存在耦合、版本管理、语言绑定等问题。后来出现了 SideCar，使业务逻辑和通信逻辑彻底解耦。缺点是缺少有效的整体控制，不适用于大规模网络拓扑。终于，我们迎来了服务网格，在数据平面之外，引入控制层面，通过控制平面对数据层面进行管理。目前主流是收购了 envoy 的Istio。不管是硬件还是软件，各大厂家都在争标准高地。<br>硬件中不存在软件中的网络通信问题，但其有硬件自身特有的问题。从上面 UCIE 联盟推荐的封装方式可以看出，先进封装基本都是软件中常用的“加一层”的方法来实现，在硬件中加一层在现实中是真实存在的，于是需要考虑另外的问题，如芯片堆叠导致垂直路径热阻增加等。</li>
+</ol>
+<p>最后，致敬一下。我们还在28nm独立自主路上，使用中兴国际的N+1工艺至少可以做到台积电14nm的性能，再进行先进封装可以接近7nm。N+2工艺可以做到台积电7nm的性能，再进行先进封装可以接近5nm。<br><img src="/2022/12/10/Chiplet，硬件领域的服务拆分/image-20221210155532075.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Sarieli
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/" title="Chiplet，硬件领域的服务拆分">http://yoursite.com/2022/12/10/Chiplet，硬件领域的服务拆分/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/18/High-Speed Tracking with Kernelized Correlation Filters 渣翻/" rel="next" title="High-Speed Tracking with Kernelized Correlation Filters 渣翻">
+                <i class="fa fa-chevron-left"></i> High-Speed Tracking with Kernelized Correlation Filters 渣翻
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Sarieli">
+            
+              <p class="site-author-name" itemprop="name">Sarieli</p>
+              <p class="site-description motion-element" itemprop="description">大道甚夷，而人好径</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chiplet的定义"><span class="nav-number">1.</span> <span class="nav-text">Chiplet的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chiplet和服务拆分"><span class="nav-number">2.</span> <span class="nav-text">Chiplet和服务拆分</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#先进封装和服务间通信"><span class="nav-number">3.</span> <span class="nav-text">先进封装和服务间通信</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sarieli</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">35.8k</span>
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  访问人数 <span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+  总阅读量 <span id="busuanzi_value_site_pv"></span>
+</span>
+
+<!--
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9KDsTY6EkCBGjRausf1kf6LC-gzGzoHsz", "1VTtq7tsYmHGToQSADoWzFy3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

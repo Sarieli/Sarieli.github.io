@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="相关滤波,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="论文地址渣翻过程中有些语句我也不甚了了，文章以一段原文一段渣翻的形式给出，方便对照。论文中的图请自行去论文查看。论文的实验部分没有翻译。在个别段落间会插入自己的一些想法。Abstract—The core component of most modern trackers is a discriminative classifier, tasked with distinguishing betw">
+<meta name="keywords" content="相关滤波">
+<meta property="og:type" content="article">
+<meta property="og:title" content="High-Speed Tracking with Kernelized Correlation Filters 渣翻">
+<meta property="og:url" content="http://yoursite.com/2018/11/18/High-Speed Tracking with Kernelized Correlation Filters 渣翻/index.html">
+<meta property="og:site_name" content="东门屿">
+<meta property="og:description" content="论文地址渣翻过程中有些语句我也不甚了了，文章以一段原文一段渣翻的形式给出，方便对照。论文中的图请自行去论文查看。论文的实验部分没有翻译。在个别段落间会插入自己的一些想法。Abstract—The core component of most modern trackers is a discriminative classifier, tasked with distinguishing betw">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-21T07:42:41.228Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="High-Speed Tracking with Kernelized Correlation Filters 渣翻">
+<meta name="twitter:description" content="论文地址渣翻过程中有些语句我也不甚了了，文章以一段原文一段渣翻的形式给出，方便对照。论文中的图请自行去论文查看。论文的实验部分没有翻译。在个别段落间会插入自己的一些想法。Abstract—The core component of most modern trackers is a discriminative classifier, tasked with distinguishing betw">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '473EBY24LB',
+      apiKey: 'c5b13ea44f24e9c46ec515b70a0b354a',
+      indexName: 'East door island',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/18/High-Speed Tracking with Kernelized Correlation Filters 渣翻/">
+
+
+
+
+
+  <title>High-Speed Tracking with Kernelized Correlation Filters 渣翻 | 东门屿</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6e8a99bb1d9d0ffd8cf061e4aa447c03";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">东门屿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/18/High-Speed Tracking with Kernelized Correlation Filters 渣翻/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sarieli">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="东门屿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">High-Speed Tracking with Kernelized Correlation Filters 渣翻</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-18T20:15:45+08:00">
+                2018-11-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index">
+                    <span itemprop="name">CV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/11/18/High-Speed Tracking with Kernelized Correlation Filters 渣翻/" class="leancloud_visitors" data-flag-title="High-Speed Tracking with Kernelized Correlation Filters 渣翻">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  20.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  98
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="http://www.robots.ox.ac.uk/~joao/publications/henriques_tpami2015.pdf" target="_blank" rel="noopener">论文地址</a><br>渣翻过程中有些语句我也不甚了了，文章以一段原文一段渣翻的形式给出，方便对照。<br>论文中的图请自行去论文查看。<br>论文的实验部分没有翻译。<br>在个别段落间会插入自己的一些想法。<br><strong>Abstract</strong>—The core component of most modern trackers is a discriminative classifier, tasked with distinguishing between the target and the surrounding environment. To cope with natural image changes, this classifier is typically trained with translated and scaled sample patches. Such sets of samples are riddled with redundancies – any overlapping pixels are constrained to be the same. Based on this simple observation, we propose an analytic model for datasets of thousands of translated patches. By showing that the resulting data matrix is circulant, we can diagonalize it with the Discrete Fourier Transform, reducing both storage and computation by several orders of magnitude. Interestingly, for linear regression our formulation is equivalent to a correlation filter, used by some of the fastest competitive trackers. For kernel regression, however, we derive a new Kernelized Correlation Filter (KCF), that unlike other kernel algorithms has the exact same complexity as its linear counterpart. Building on it, we also propose a fast multi-channel extension of linear correlation filters, via a linear kernel, which we call Dual Correlation Filter (DCF). Both KCF and DCF outperform top-ranking trackers such as Struck or TLD on a 50 videos benchmark, despite running at hundreds of frames-per-second, and being implemented in a few lines of code (Algorithm 1). To encourage further developments, our tracking framework was made open-source.<br><strong>摘要</strong>——大多数目前的跟踪器的核心部分是判别分类器，其任务是区分目标和周围环境。为了应对自然图像中的变化，通常使用经过平移和缩放的样本块来训练该分类器。这样的样本集充满了冗余——任何重叠的像素都被限制为同一像素。基于这一简单的观察，我们提出了一种分析模型用于具有成千上万个平移图像块的数据集。通过指出生成的数据矩阵是循环矩阵，我们可以使用离散傅立叶变换对其进行对角化，从而将存储空间和计算量减少几个数量级。有趣的是，对于线性回归，我们的公式等价于一些速度最快的具有竞争力的跟踪器所使用的相关滤波器。然而，对于核回归，我们推导出一种新的核相关滤波器（KCF），它和那些复杂度与其线性程度相同的核算法不同。在此基础上，通过使用线性核，我们还提出了一种线性相关滤波器的快速多通道扩展，我们称之为对偶相关滤波器（DCF）。尽管每秒运行数百帧，并且只需少量的代码即可实现，KCF和DCF在基准数据集的50个视频中的表现仍优于Struck和TLD等顶级跟踪器（算法1）。为了鼓励进一步发展，我们的跟踪框架已开源。</p>
+<h1 id="INTRODUCTION"><a href="#INTRODUCTION" class="headerlink" title="INTRODUCTION"></a>INTRODUCTION</h1><p>arguably one of the biggest breakthroughs in recent visual tracking research was the widespread adoption of discriminative learning methods. The task of tracking, a crucial component of many computer vision systems, can be naturally specified as an online learning problem [1], [2]. Given an initial image patch containing the target, the goal is to learn a classifier to discriminate between its appearance and that of the environment. This classifier can be evaluated exhaustively at many locations, in order to detect it in subsequent frames. Of course, each new detection provides a new image patch that can be used to update the model.<br>可以说，最近视觉跟踪研究中最大的突破之一就是判别学习方法的广泛应用。跟踪任务是许多计算机视觉系统的一个关键部分，可以很自然地被指定为一个在线学习问题[1]，[2]。给定包含目标的一个初始图像块，目的是学习一个分类器以区分目标和背景环境。可以在许多位置穷举地评估该分类器，以便在后续帧中检测目标。当然，每次新的检测都提供了一个新的图像块，该图像块可用于更新模型。<br>It is tempting to focus on characterizing the object of interest – the positive samples for the classifier. However, a core tenet of discriminative methods is to give as much importance, or more, to the relevant environment – the negative samples. The most commonly used negative samples are image patches from different locations and scales, reflecting the prior knowledge that the classifier will be evaluated under those conditions.<br>人们倾向于关注表征感兴趣的目标的特征——用于训练分类器的正样本。然而，判别方法的一个核心原则是相关背景环境——负面样本具有相同或更多的重要性。最常用的负样本是从不同位置和不同尺度得到的图像块集，其反映了将在这些背景环境下评估分类器这一先验知识。<br>An extremely challenging factor is the virtually unlimited amount of negative samples that can be obtained from an image. Due to the time-sensitive nature of tracking, modern trackers walk a fine line between incorporating as many samples as possible and keeping computational demand low. It is common practice to randomly choose only a few samples each frame [3], [4], [5], [6], [7].<br>一个极具挑战性的因素是可以从一张图像中获得几乎无尽的负样本。由于跟踪的时间敏感性，现代跟踪器在尽可能多地包含样本和保持低计算量的要求之间平衡得很好。通常的做法是在每帧图像中随机选择一些样本[3]，[4]，[5]，[6]，[7]。<br>Although the reasons for doing so are understandable, we argue that undersampling negatives is the main factor inhibiting performance in tracking. In this paper, we develop tools to analytically incorporate thousands of samples at different relative translations, without iterating over them explicitly. This is made possible by the discovery that, in the Fourier domain, some learning algorithms actually become $easier$ as we add $more$ samples, if we use a specific model for translations.<br>虽然这样做的原因是可以理解的，但我们认为负样本的欠采样是阻碍跟踪性能的主要因素。在本文中，我们开发了解析包含不同相对位移下的数千个样本的工具，而无需显式地迭代它们。这可以通过以下发现变得可能：在傅立叶域中，如果我们使用一个特定的模型进行位移，随着我们增加<strong>更多</strong>样本一些学习算法实际上变得<strong>更简单</strong>。<br>These analytical tools, namely circulant matrices, provide a useful bridge between popular learning algorithms and classical signal processing. The implication is that we are able to propose a tracker based on Kernel Ridge Regression[8] that does not suffer from the “curse of kernelization”, which is its larger asymptotic complexity, and even exhibits lower complexity than unstructured linear regression. Instead, it can be seen as a kernelized version of a linear correlation filter, which forms the basis for the fastest trackers available [9], [10]. We leverage the powerful kernel trick at the same computational complexity as linear correlation filters. Our framework easily incorporates multiple feature channels, and by using a linear kernel we show a fast extension of linear correlation filters to the multichannel case.<br>这些分析工具，即循环矩阵，提供了有用的桥梁用以关联流行的学习算法和经典信号处理。这意味着我们能够提出一种基于核岭回归[8]的跟踪器，它不会受到“核化的诅咒”的影响，即不会有较大的渐近复杂度，并且甚至比非结构化线性回归拥有更低的复杂度。相反，它可以看成是线性相关滤波器的核化版本，这构成了目前最快的跟踪器的基础[9]，[10]。我们利用强大的核技巧使计算复杂度与线性相关滤波器相同。我们的框架很容易包含多特征通道，并且通过使用线性核，我们展示了线性相关滤波器到多通道的一种快速扩展。</p>
+<h1 id="RELATED-WORK"><a href="#RELATED-WORK" class="headerlink" title="RELATED WORK"></a>RELATED WORK</h1><h2 id="On-tracking-by-detection"><a href="#On-tracking-by-detection" class="headerlink" title="On tracking-by-detection"></a>On tracking-by-detection</h2><p>A comprehensive review of tracking-by-detection is outside the scope of this article, but we refer the interested reader to two excellent and very recent surveys [1], [2]. The most popular approach is to use a discriminative appearance model [3], [4], [5], [6]. It consists of training a classifier online, inspired by statistical machine learning methods, to predict the presence or absence of the target in an image patch. This classifier is then tested on many candidate patches to find the most likely location. Alternatively, the position can also be predicted directly [7]. Regression with class labels can be seen as classification, so we use the two terms interchangeably.<br>对检测跟踪的全面回顾超出了本文的范畴，但我们为感兴趣的读者引用了两个极好的最近的调查[1]，[2]。最流行的方法是使用判别外观模型[3]，[4]，[5]，[6]。受统计机器学习方法的启发，它包括在线训练分类器，来预测一个图像块中是否存在目标。然后在许多候选图像块上测试该分类器以找到最可能的位置。或者，也可以直接预测位置[7]。使用类标签的回归可以看作是分类，因此我们可交换地使用这两个术语。<br>We will discuss some relevant trackers before focusing on the literature that is more directly related to our analytical methods. Canonical examples of the tracking-bydetection paradigm include those based on Support Vector Machines (SVM) [12], Random Forest classifiers [6], or boosting variants [13], [5]. All the mentioned algorithms had to be adapted for online learning, in order to be useful for tracking. Zhang et al. [3] propose a projection to a fixed random basis, to train a Naive Bayes classifier, inspired by compressive sensing techniques. Aiming to predict the target’s location directly, instead of its presence in a given image patch, Hare et al. [7] employed a Structured Output SVM and Gaussian kernels, based on a large number of image features. Examples of non-discriminative trackers include the work of Wu et al. [14], who formulate tracking as a sequence of image alignment objectives, and of Sevilla-Lara and Learned-Miller [15], who propose a strong appearance descriptor based on distribution fields. Another discriminative approach by Kalal et al. [4] uses a set of structural constraints to guide the sampling process of a boosting classifier. Finally, Bolme et al. [9] employ classical signal processing analysis to derive fast correlation filters. We will discuss these last two works in more detail shortly.<br>在关注与我们的分析方法更加直接相关的文献之前，我们将讨论一些相关的跟踪器。跟踪检测样式的典型例子包括那些基于支持向量机（SVM）[12]，随机森林分类器[6]或提升方法的变种[13]，[5]。所有提到的算法都必须调整为在线学习，以便用于跟踪。Zhang et al.[3]受压缩感知技术的启发，提出了一种固定随机基的投影来训练朴素贝叶斯分类器。Hare et al.[7]采用基于大量图像特征的结构化输出支持向量机和高斯核，其目的是直接预测目标的位置，而不是在一个给定的图像块中预测其是否存在。非判别式跟踪器的例子包括Wu et al.[14]的工作，他们将跟踪描述为一系列图像配准任务，以及Sevilla-Lara and Learned-Miller [15]的工作，他们提出了一种基于分布场的强外观描述子。其它判别式方法有，Kalal et al.[4]使用一组结构约束来指导提升分类器的采样过程。最后，Bolme et al.[9]采用经典信号处理分析来推导快速相关滤波器。我们将在稍后更详细地讨论最后这两种方法。</p>
+<h2 id="On-sample-translations-and-correlation-filtering"><a href="#On-sample-translations-and-correlation-filtering" class="headerlink" title="On sample translations and correlation filtering"></a>On sample translations and correlation filtering</h2><p>Recall that our goal is to learn and detect over translated image patches efficiently. Unlike our approach, most attempts so far have focused on trying to weed out irrelevant image patches. On the detection side, it is possible to use branch-and-bound to find the maximum of a classifier’s response while avoiding unpromising candidate patches [16]. Unfortunately, in the worst-case the algorithm may still have to iterate over all patches. A related method finds the most similar patches of a pair of images efficiently [17], but is not directly translated to our setting. Though it does not preclude an exhaustive search, a notable optimization is to use a fast but inaccurate classifier to select promising patches, and only apply the full, slower classifier on those [18], [19].<br>回想一下，我们的目标是对移位的图像块高效地学习和检测。不同于我们的方法，大多数目前的方法都关注于试图剔除不相关的图像块。在检测方面，可以使用分支定界法来找到分类器响应的最大值，同时避免低可能性的候选图像块[16]。不幸的是，在最坏的情况下，该算法可能仍需要迭代所有的图像块。有一种相关的方法可以高效地找到一对图像中最相似的图像块[17]，但其无法直接转化为我们的设定。虽然它并无法排除穷举搜索，但一个显著的优化是使用快速但不精确的分类器来选择可能性高的图像块，并且只对这些图像块应用精确的，较慢的分类器[18]，[19]。<br>On the training side, Kalal et al. [4] propose using structural constraints to select relevant sample patches from each new image. This approach is relatively expensive, limiting the features that can be used, and requires careful tuning of the structural heuristics. A popular and related method, though it is mainly used in offline detector learning, is hard-negative mining [20]. It consists of running an initial detector on a pool of images, and selecting any wrong detections as samples for re-training. Even though both approaches reduce the number of training samples, a major drawback is that the candidate patches have to be considered exhaustively, by running a detector.<br>在训练方面，Kalal et al.[4]提出使用结构约束从每个新图像中选择相关的样本块集。这种方法的代价相对昂贵，限制了可以使用的特征，并且需要仔细调整结构启发式。一种流行的相关方法是难分样本挖掘[20]，虽然其主要用于离线检测器学习。它在一个图像池上运行初始检测器，并选择任何检测错误的样本作为重新训练的样本。尽管两种方法都减少了训练样本的数量，但一个主要缺点是必须通过运行检测器来穷举考虑候选图像块。<br>The initial motivation for our line of research was the recent success of correlation filters in tracking [9], [10]. Correlation filters have proved to be competitive with far more complicated approaches, but using only a fraction of the computational power, at hundreds of frames-per-second. They take advantage of the fact that the convolution of two patches (loosely, their dot-product at different relative translations) is equivalent to an element-wise product in the Fourier domain. Thus, by formulating their objective in the Fourier domain, they can specify the desired output of a linear classifier for several translations, or image shifts, at once.<br>我们这个研究方向的最初动机是近期相关滤波器在跟踪中的成功应用[9]，[10]。事实证明，相关滤波器具有和更复杂的方法一教高下的能力，但它仅占用一小部分的计算能力，且运行时能达到数百帧每秒。它们利用了这样一个事实，即两个图像块的卷积（松散地，它们在不同相对位移的点积）相当于傅里叶域中一个逐元素的乘积。因此，通过在傅里叶域中用公式表示它们的目标函数，它们可以一次性计算出用于若干位移，或者说图像位移的线性分类器的期望输出。<br>A Fourier domain approach can be very efficient, and has several decades of research in signal processing to draw from [21]. Unfortunately, it can also be extremely limiting. We would like to simultaneously leverage more recent advances in computer vision, such as more powerful features, large-margin classifiers or kernel methods [22], [20], [23].<br>傅立叶域方法可以非常高效，并且在信号处理领域中数十年的研究已经证明了这点[21]。不幸的是，它的能力也是非常有限的。我们希望同时利用计算机视觉方面的最新进展，例如更强大的特征，大间隔分类器或核方法[22]，[20]，[23]。<br>A few studies go in that direction, and attempt to apply kernel methods to correlation filters [24], [25], [26], [27]. In these works, a distinction must be drawn between two types of objective functions: those that do not consider the power spectrum or image translations, such as Synthetic Discriminant Function (SDF) filters [25], [26], and those that do, such as Minimum Average Correlation Energy [28], Optimal Trade-Off [27] and Minimum Output Sum of Squared Error (MOSSE) filters [9]. Since the spatial structure can effectively be ignored, the former are easier to kernelize, and Kernel SDF filters have been proposed [26], [27], [25]. However, lacking a clearer relationship between translated images, non-linear kernels and the Fourier domain, applying the kernel trick to other filters has proven much more difficult [25], [24], with some proposals requiring significantly higher computation times and imposing strong limits on the number of image shifts that can be considered [24].<br>一些研究在朝这个方向发展，并尝试将核方法应用于相关滤波器[24]，[25]，[26]，[27]。在这些工作中，必须区分两种类型的目标函数：不考虑功率谱和图像移位的那些，例如合成判别函数（SDF）滤波器[25]，[26]，和与之相反的那些，例如Minimum Average Correlation Energy[28]，Optimal Trade-Off[27]和最小平方误差输出和（MOSSE）滤波器[9]。由于可以有效地忽略空间结构，前者更容易核化，并且已经提出了核SDF滤波器[26]，[27]，[25]。然而，在移位图像，非线性核和傅里叶域之间缺乏更清晰的联系，考虑到一些提出的方法需要明显更多的计算时间并且对图像移位的数量有很强的限制[24]，已经证明将核技巧应用于其它过滤器更加困难[25]，[24]。<br>For us, this hinted that a deeper connection between translated image patches and training algorithms was needed, in order to overcome the limitations of direct Fourier domain formulations.<br>对于我们来说，这暗示了需要在移位图像块和训练算法之间建立更深层次的联系，以克服直接应用傅立叶域公式的局限性。</p>
+<h2 id="Subsequent-work"><a href="#Subsequent-work" class="headerlink" title="Subsequent work"></a>Subsequent work</h2><p>Since the initial version of this work [29], an interesting time-domain variant of the proposed cyclic shift model has been used very successfully for video event retrieval [30]. Generalizations of linear correlation filters to multiple channels have also been proposed [31], [32], [33], some of which building on our initial work. This allows them to leverage more modern features (e.g. Histogram of Oriented Gradients – HOG). A generalization to other linear algorithms, such as Support Vector Regression, was also proposed [31]. We must point out that all of these works target off-line training, and thus rely on slower solvers [31], [32], [33]. In contrast, we focus on fast element-wise operations, which are more suitable for real-time tracking, even with the kernel<br> trick.<br>自从这项工作的初始版本[29]以来，所提出的循环移位模型的一个有趣的时域变种已经非常成功地应用于视频事件检索[30]。线性相关滤波器到多通道的推广也已经被提出[31]，[32]，[33]，其中一些基于我们的初始版本的工作。这使得他们可以利用更现代的特征（例如，方向梯度直方图 - HOG）。对其他线性算法的推广也被提出，例如支持向量回归[31]。我们必须指出，所有这些工作都以离线训练为目标，因此依赖于较慢的解[31]，[32]，[33]。相比之下，我们专注于快速的逐元素运算，即使使用核技巧，它也更适合于实时跟踪。</p>
+<h1 id="CONTRIBUTIONS"><a href="#CONTRIBUTIONS" class="headerlink" title="CONTRIBUTIONS"></a>CONTRIBUTIONS</h1><p>A preliminary version of this work was presented earlier [29]. It demonstrated, for the first time, the connection between Ridge Regression with cyclically shifted samples and classical correlation filters. This enabled fast learning with $\mathcal{O}(nlogn)$ Fast Fourier Transforms instead of expensive matrix algebra. The first Kernelized Correlation Filter was also proposed, though limited to a single channel. Additionally, it proposed closed-form solutions to compute kernels at all cyclic shifts. These carried the same $\mathcal{O}(nlogn)$ computational cost, and were derived for radial basis and dot-product kernels.<br>之前提出了这项工作的初始版本[29]。它首次证明了使用循环移位样本的岭回归和经典相关滤波器之间的联系。这使得能够使用时间复杂度为$\mathcal{O}(nlogn)$的快速傅立叶变换而不是代价昂贵的矩阵代数进行快速学习。还提出了第一个核相关滤波器，但仅限于单通道。此外，它提出了在所有循环移位中计算核函数的解析解。这些运算的计算开销均为$\mathcal{O}(nlogn)$，并且是针对径向基核和点积核推导的。<br>The present work adds to the initial version in significant ways. All the original results were re-derived using a much simpler diagonalization technique (Sections 4-6). We extend the original work to deal with multiple channels, which allows the use of state-of-the-art features that give an important boost to performance (Section 7). Considerable new analysis and intuitive explanations are added to the initial results. We also extend the original experiments from 12 to 50 videos, and add a new variant of the Kernelized Correlation Filter (KCF) tracker based on Histogram of Oriented Gradients (HOG) features instead of raw pixels. Via a linear kernel, we additionally propose a linear multichannel filter with very low computational complexity, that almost matches the performance of non-linear kernels. We name it Dual Correlation Filter (DCF), and show how it is related to a set of recent, more expensive multi-channel filters [31]. Experimentally, we demonstrate that the KCF already performs better than a linear filter, without any feature extraction. With HOG features, both the linear DCF and non-linear KCF outperform by a large margin topranking trackers, such as Struck [7] or Track-Learn-Detect (TLD) [4], while comfortably running at hundreds of framesper-second.<br>现在的工作对初始版本增加了一些重要内容。使用一种更简单的对角化技术对所有原始结果重新推导（第4-6节）。我们拓展原始方法以处理多通道，这使得可以应用最先进的特征，这些特征可以显著提升性能（第7节）。在初始结果的基础上添加了大量新的分析和直观解释。我们还将原始实验从12个视频扩展到50个视频，并添加了一种基于方向梯度直方图（HOG）特征而非原始像素值的核相关滤波（KCF）跟踪器的新变体。通过线性核，我们还提出了一种线性多通道滤波器，其计算复杂度非常低，几乎达到了非线性核的性能。我们将其命名为对偶相关滤波器（DCF），并展示它与一组最近的代价更昂贵的多通道滤波器的关系[31]。在实验中，我们证明了在没有任何特征提取的情况下，KCF已经表现得比线性滤波器更好。借助HOG特征，线性的DCF和非线性的KCF都能以绝对的优势表现得比顶级跟踪器（如Struck[7]和Track-Learn-Detect（TLD）[4]）更出色，并且能以几百帧每秒的速度轻松运行。</p>
+<h1 id="BUILDING-BLOCKS"><a href="#BUILDING-BLOCKS" class="headerlink" title="BUILDING BLOCKS"></a>BUILDING BLOCKS</h1><p>In this section, we propose an analytical model for image patches extracted at different translations, and work out the impact on a linear regression algorithm. We will show a natural underlying connection to classical correlation filters. The tools we develop will allow us to study more complicated algorithms in Sections 5-7.<br>在本节中，我们为在不同移位下提取的图像块集提出了一种分析模型，并计算出其对线性回归算法的影响。我们将展示它与经典相关滤波器的一种天然的潜在联系。我们开发的工具将使得我们在第5-7节中研究更复杂的算法。</p>
+<h2 id="Linear-regression"><a href="#Linear-regression" class="headerlink" title="Linear regression"></a>Linear regression</h2><p>We will focus on Ridge Regression, since it admits a simple closed-form solution, and can achieve performance that is close to more sophisticated methods, such as Support Vector Machines [8]. The goal of training is to find a function $f(\mathbf{z}) = \mathbf{w}^{T}\mathbf{z}$ that minimizes the squared error over samples $\mathbf{x}_{i}$ and their regression targets $y_{i}$,<br>我们将关注岭回归，因为它有一个简单的解析解，并且可以取得和更复杂方法接近一样的性能，例如支持向量机[8]。训练的目标是找到一个函数$f(\mathbf{z}) = \mathbf{w}^{T}\mathbf{z}$，它能最小化样本$\mathbf{x}_{i}$及其回归目标$y_{i}$的平方误差，  </p>
+<script type="math/tex; mode=display">\min_{\mathbf{w}}\sum_{i}^{ }(f(\mathbf{x}_{i})-y_{i})^2+\lambda \left \| \mathbf{w} \right \|^{2}.\tag{1}</script><p>The $\lambda$ is a regularization parameter that controls overfitting, as in the SVM. As mentioned earlier, the minimizer has a closed-form, which is given by [8]<br>$\lambda$是一个控制过拟合的正则化参数，跟SVM中的意义一样。如前所述，该最小化公式具有封闭解，由[8]给出</p>
+<script type="math/tex; mode=display">\mathbf{w}=(X^{T}X+\lambda I)^{-1}X^{T}\mathbf{y}.\tag{2}</script><p>where the data matrix $X$ has one sample per row $\mathbf{x}_{i}$, and each element of $\mathbf{y}$ is a regression target $y_{i}$. $I$ is an identity matrix.<br>其中数据矩阵$X$每行具有一个样本$\mathbf{x}_{i}$，并且$\mathbf{y}$的每个元素是一个回归目标$y_{i}$。$I$是一个单位矩阵。</p>
+<blockquote>
+<p>将式（1）写成矩阵形式有</p>
+<script type="math/tex; mode=display">\min_{\mathbf{w}}\left \| X\mathbf{w}-\mathbf{y} \right \|^{2}+\lambda \left \| \mathbf{w} \right \|^{2}</script><p>对上式关于$\mathbf{w}$求导并令其为0即可得式（2）</p>
+</blockquote>
+<p>Starting in Section 4.4, we will have to work in the Fourier domain, where quantities are usually complexvalued. They are not harder to deal with, as long as we use the complex version of Eq. 2 instead,<br>从4.4节开始，我们将不得不在傅里叶域中进行推导，其中数值通常是复数。只要我们使用式（2）的复数版本替代，它们就不难处理，</p>
+<script type="math/tex; mode=display">\mathbf{w}=(X^{H}X+\lambda I)^{-1}X^{H}\mathbf{y} ,\tag{3}</script><p>where $X^H$ is the Hermitian transpose, i.e., $X^H=(X^✳)^T$ , and $X^✳$ is the complex-conjugate of $X$. For real numbers, Eq. 3 reduces to Eq. 2.<br>其中$X^H$是厄米特转置矩阵，即$X^H=(X^✳)^T$, 且$X^✳$是$X$的复共轭。对于实数，式（3）退化到式（2）。<br>In general, a large system of linear equations must be solved to compute the solution, which can become prohibitive in a real-time setting. Over the next paragraphs we will see a special case of $\mathbf{x}_{i}$ that bypasses this limitation.<br>通常，必须求解一个大的线性方程组来计算解，这在实时设定中是禁止的。在接下来的段落中，我们将看到一个$\mathbf{x}_{i}$的特殊情况，其绕过了这个限制。</p>
+<h2 id="Cyclic-shifts"><a href="#Cyclic-shifts" class="headerlink" title="Cyclic shifts"></a>Cyclic shifts</h2><p>For notational simplicity, we will focus on single-channel, one-dimensional signals. These results generalize to multichannel, two-dimensional images in a straightforward way (Section 7).<br>为了简化符号，我们将专注于单通道、一维信号。这些结果能直接推广到多通道二维图像（第7节）。<br>Consider an $n×1$ vector representing a patch with the object of interest, denoted $\mathbf{x}$. We will refer to it as the $base\ sample$. Our goal is to train a classifier with both the base sample (a positive example) and several virtual samples obtained by translating it (which serve as negative examples). We can model one-dimensional translations of this vector by a $cyclic\ shift\ operator$, which is the permutation matrix<br>考虑一个$n×1$向量代表一个含有感兴趣目标的图像块，表示为$\mathbf{x}$。我们将其称为<strong>基础样本</strong>。我们的目标是使用基础样本（一个正样本）和通过平移基础样本获得的若干虚拟样本（视为负样本）训练一个分类器。我们可以通过一个<strong>循环移位算子</strong>来建模该向量的一维移位，该算子是置换矩阵</p>
+<script type="math/tex; mode=display">P=\begin{bmatrix}
+0 &  0&  0&  \cdots &1 \\ 
+1&   0&  0&  \cdots &0\\ 
+0&   1&  0&  \cdots &0\\ 
+ \vdots & \vdots &  \ddots& \ddots  & \vdots\\ 
+0&   0&  \cdots&  1 &0 
+\end{bmatrix}.\tag{4}</script><p>The product $P\mathbf{x}=[x_{n},x_{1},x_{2},\ldots ,x_{n-1}]^T$ shifts $\mathbf{x}$ by one element, modeling a small translation. We can chain $u$ shifts to achieve a larger translation by using the matrix power $P^u\mathbf{x}$. A negative $u$ will shift in the reverse direction. A 1D signal translated horizontally with this model is illustrated in Fig. 3, and an example for a 2D image is shown in Fig. 2.<br>乘积$P\mathbf{x}=[x_{n},x_{1},x_{2},\ldots ,x_{n-1}]^T$将$\mathbf{x}$平移了一个元素，建模了一个小位移。通过使用矩阵幂$P^u\mathbf{x}$我们可以连续平移$u$次以达到更大的位移。一个负数的$u$将反向平移。使用该模型水平平移后的一维信号如图3所示，二维图像的一个示例如图2所示。<br>The attentive reader will notice that the last element wraps around, inducing some distortion relative to a true translation. However, this undesirable property can be mitigated by appropriate padding and windowing (Section A.1). The fact that a large percentage of the elements of a signal are still modeled correctly, even for relatively large translations (see Fig. 2), explains the observation that cyclic shifts work well in practice.<br>细心的读者会注意到最后一个元素的环绕，导致了相对于真实位移的一些失真。但是，这种不良特性可以通过适当的填充和加窗来减轻（A.1节）。即使对于相对较大的移位，信号的绝大部分元素仍然能正确建模的事实（见图2），解释了循环移位在实践中效果良好的观察结果。<br>Due to the cyclic property, we get the same signal $\mathbf{x}$ periodically every $n$ shifts. This means that the full set of shifted signals is obtained with<br>由于循环特性，每进行$n$次移位，我们会周期性地得到相同的信号$\mathbf{x}$。这意味着可以用式（5）获得移位后信号的整个集合</p>
+<script type="math/tex; mode=display">\left \{ P^u\mathbf{x}\mid u=0,\ldots ,n-1 \right \}.\tag{5}</script><p>Again due to the cyclic property, we can equivalently view the first half of this set as shifts in the positive direction, and the second half as shifts in the negative direction.<br>再次由于循环特性，我们可以等效地将该集合的前半部分视为在正方向上的移位，而后半部分视为在负方向上的移位。</p>
+<h2 id="Circulant-matrices"><a href="#Circulant-matrices" class="headerlink" title="Circulant matrices"></a>Circulant matrices</h2><p>To compute a regression with shifted samples, we can use the set of Eq. 5 as the rows of a data matrix $X$:<br>要计算带有移位样本的回归，我们可以使用如式（5）的集合作为数据矩阵$ X $的行：</p>
+<script type="math/tex; mode=display">X=C(\mathbf{x})=\begin{bmatrix}
+x_{1} &  x_{2}&  x_{3}&  \cdots &x_{n} \\ 
+ x_{n}&  x_{1}&  x_{2}&  \cdots& x_{n-1}\\ 
+ x_{n-1}&  x_{n}&  x_{1}&  \cdots& x_{n-2}\\ 
+ \vdots & \vdots &  \vdots& \ddots  & \vdots\\ 
+ x_{2}&  x_{3}&  x_{4}&  \cdots& x_{1}
+\end{bmatrix}.\tag{6}</script><p>An illustration of the resulting pattern is given in Fig. 3. What we have just arrived at is a $circulant$ matrix, which has several intriguing properties [34], [35]. Notice that the pattern is deterministic, and fully specified by the generating vector $\mathbf{x}$, which is the first row.<br>图3给出了生成的模式的图示。我们刚得到的是一个<strong>循环</strong>矩阵，它具有几个有趣的特性[34]，[35]。注意到该模式是确定的，并且由生成向量$\mathbf{x}$（矩阵的第一行）完全指定。<br>What is perhaps most amazing and useful is the fact that $all$ circulant matrices are made diagonal by the Discrete Fourier Transform (DFT), regardless of the generating vector $\mathbf{x}$ [34]. This can be expressed as<br>最令人惊奇和有用的事实可能是，对任意生成向量$\mathbf{x}$，<strong>所有</strong>循环矩阵都可通过离散傅立叶变换（DFT）进行对角化[34]。这可以表示为</p>
+<script type="math/tex; mode=display">X=Fdiag(\hat{\mathbf{x}})F^H,\tag{7}</script><p>where $F$ is a constant matrix that does not depend on $\mathbf{x}$, and $\hat{\mathbf{x}}$ denotes the DFT of the generating vector, $\hat{\mathbf{x}}=\mathcal{F}(\mathbf{x})$. From now on, we will always use a hat ^ as shorthand for the DFT of a vector.<br>其中$F$是不依赖于$\mathbf{x}$的常数矩阵，并且$\hat{\mathbf{x}}$表示生成向量的离散傅里叶变换，即$\hat{\mathbf{x}}=\mathcal{F}(\mathbf{x})$。从现在开始，我们将始终使用^符号作为一个向量的离散傅里叶变换的简写。<br>The constant matrix $F$ is known as the DFT $matrix$, and is the unique matrix that computes the DFT of any input vector, as $\mathcal{F} (\mathbf{z})=\sqrt{n}F\mathbf{z}$. This is possible because the DFT is a linear operation.<br>常数矩阵$F$被称为离散傅里叶变换<strong>矩阵</strong>，并且是计算任何输入向量的离散傅里叶变换的唯一矩阵，即$\mathcal{F} (\mathbf{z})=\sqrt{n}F\mathbf{z}$。这是可能的，因为离散傅里叶变换是一种线性运算。</p>
+<blockquote>
+<p>离散傅立叶变换的公式为</p>
+<script type="math/tex; mode=display">X(k)=DFT\left [ x(n) \right ]=\sum_{n=0}^{N-1}x(n)W_{N}^{kn}\qquad k=0,1,\ldots,N-1</script><p>式中$W_{N}=e^{-j\frac{2\pi }{N}}$，将其写成矩阵形式有</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+X(0)\\ 
+X(1)\\ 
+X(2)\\ 
+\vdots \\ 
+X(N-1)
+\end{bmatrix}=\begin{bmatrix}
+1 & 1 &  1& \cdots  & 1\\ 
+1 & W_{N}^{1} & W_{N}^{2} & \cdots  &W_{N}^{N-1} \\ 
+1 &  W_{N}^{2}& W_{N}^{4} & \cdots  &W_{N}^{2(N-1)} \\ 
+\vdots  & \vdots  & \vdots  & \ddots  &\vdots  \\ 
+1 & W_{N}^{N-1} & W_{N}^{2(N-1)} & \cdots  & W_{N}^{(N-1)(N-1)}
+\end{bmatrix}\begin{bmatrix}
+x(0)\\ 
+x(1)\\ 
+x(2)\\ 
+\vdots \\ 
+x(N-1)
+\end{bmatrix}</script><p>则上面的常数矩阵为</p>
+<script type="math/tex; mode=display">F=\frac{1}{\sqrt{N}}\begin{bmatrix}
+1 & 1 &  1& \cdots  & 1\\ 
+1 & W_{N}^{1} & W_{N}^{2} & \cdots  &W_{N}^{N-1} \\ 
+1 &  W_{N}^{2}& W_{N}^{4} & \cdots  &W_{N}^{2(N-1)} \\ 
+\vdots  & \vdots  & \vdots  & \ddots  &\vdots  \\ 
+1 & W_{N}^{N-1} & W_{N}^{2(N-1)} & \cdots  & W_{N}^{(N-1)(N-1)}
+\end{bmatrix}</script><p>对式（7）进一步转化，有</p>
+<script type="math/tex; mode=display">F^{-1}X(F^H)^{-1}=diag(\hat{\mathbf{x}})</script><p>由于矩阵$F$的酉性，可进一步化简为</p>
+<script type="math/tex; mode=display">F^{H}XF=diag(\hat{\mathbf{x}})</script><p>即循环矩阵$X$可以通过$F$阵进行对角化。<br><a href="https://blog.csdn.net/shenxiaolu1984/article/details/50884830" title="式（7）的证明" target="_blank" rel="noopener">式（7）的证明</a></p>
+</blockquote>
+<p>Eq. 7 expresses the eigendecomposition of a general circulant matrix. The shared, deterministic eigenvectors $F$ lie at the root of many uncommon features, such as commutativity or closed-form inversion.<br>式（7）表示一般循环矩阵的特征分解。共享的，确定的特征向量集$F$是许多杰出特性的根本，例如交换性或闭合形式的逆。</p>
+<h2 id="Putting-it-all-together"><a href="#Putting-it-all-together" class="headerlink" title="Putting it all together"></a>Putting it all together</h2><p>We can now apply this new knowledge to simplify the linear regression in Eq. 3, when the training data is composed of cyclic shifts. Being able to work solely with diagonal matrices is very appealing, because all operations can be done element-wise on their diagonal elements.<br>当训练数据由循环移位向量组成时，我们现在可以应用这个新知识来简化式（3）中的线性回归。能够仅使用对角阵是非常有吸引力的，因为所有操作都可以在其对角元素上逐元素完成。<br>Take the term $X^HX$, which can be seen as a noncentered covariance matrix. Replacing Eq. 7 in it,<br>$X^HX$项，可以将其视为非中心化的协方差矩阵。将式（7）代入，</p>
+<script type="math/tex; mode=display">X^HX=Fdiag(\hat{\mathbf{x}}^*)F^HFdiag(\hat{\mathbf{x}})F^H.\tag{8}</script><p>Since diagonal matrices are symmetric, taking the Hermitian transpose only left behind a complex-conjugate, $\hat{\mathbf{x}}^✳$. Additionally, we can eliminate the factor $F^HF=I$. This property is the unitarity of $F$ and can be canceled out in many expressions. We are left with<br>由于对角阵是对称的，因此进行厄米特转置仅将元素变为复共轭，$\hat{\mathbf{x}}^✳$。另外，我们可以消除因子$F^HF=I$。这个属性是$F$的酉性，可以在许多表达式中被抵消。抵消后得到</p>
+<script type="math/tex; mode=display">X^HX=Fdiag(\hat{\mathbf{x}}^*)diag(\hat{\mathbf{x}})F^H.\tag{9}</script><p>Because operations on diagonal matrices are element-wise, we can define the element-wise product as $\odot$ and obtain<br>因为关于对角阵的运算是逐元素的，我们可以将点积定义为$\odot$并得到</p>
+<script type="math/tex; mode=display">X^HX=Fdiag(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}})F^H.\tag{10}</script><p>An interesting aspect is that the vector in brackets is known as the $auto-correlation$ of the signal $\mathbf{x}$ (in the Fourier domain, also known as the power spectrum [21]). In classical signal processing, it contains the variance of a time-varying process for different time lags, or in our case, space.<br>有趣的是括号中的向量被称为信号$\mathbf{x}$的<strong>自相关</strong>（在傅立叶域中，也称为功率谱[21]）。在经典信号处理中，它包含了不同时延的一个时变过程的方差，或者在我们的例子中，包含空间变化的方差。<br>The above steps summarize the general approach taken in diagonalizing expressions with circulant matrices. Applying them recursively to the full expression for linear regression (Eq. 3), we can put most quantities inside the diagonal,<br>上述步骤总结了对角化带有循环矩阵的表达式所采用的一般方法。递归地将它们应用于线性回归的完整表达式（式（3）），我们可以将大多数元素放在对角线中，</p>
+<script type="math/tex; mode=display">\hat{\mathbf{w}}=diag(\frac{\hat{\mathbf{x}}^*}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda})\hat{\mathbf{y}},\tag{11}</script><p>or better yet,<br>或更好的形式为，</p>
+<script type="math/tex; mode=display">\hat{\mathbf{w}}=\frac{\hat{\mathbf{x}}^*\odot\hat{\mathbf{y}}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda}.\tag{12}</script><p>The fraction denotes element-wise division. We can easily recover $\mathbf{w}$ in the spatial domain with the Inverse DFT, which has the same cost as a forward DFT. The detailed steps of the recursive diagonalization that yields Eq. 12 are given in Appendix A.5.<br>分数线表示逐元素相除。我们可以使用逆离散傅立叶变换轻松得到空域中的$\mathbf{w}$，其具有和正向离散傅立叶变换相同的计算代价。产生式（12）的递归地对角化的详细步骤在附录A.5给出。</p>
+<blockquote>
+<p>式（12）有问题，有很多人也发现了，附录A.5的推导确实有问题，正确结果应该为</p>
+<script type="math/tex; mode=display">\hat{\mathbf{w}}=\frac{\hat{\mathbf{x}}^\odot\hat{\mathbf{y}}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda}</script><p>分子上的$\hat{\mathbf{x}}$不需要复共轭，具体推导过程见附录A.5。代码中并没有使用这一公式，使用的是在对偶空间中求解$\boldsymbol{\alpha}$的公式，所以代码是正确的。<br>同时，$X^HX$的原始运算量为$\mathcal{O}(n^3)$，通过对角化，将复杂度降低为逆离散傅里叶变换（$\mathcal{O}(nlogn)$）加向量点积（$\mathcal{O}(n)$）。</p>
+</blockquote>
+<p>At this point we just found an unexpected formula from classical signal processing – the solution is a regularized correlation filter [9], [21].<br>此时，我们正好从经典信号处理中发现一个意外的公式——该解是一个正则化的相关滤波器[9]，[21]。<br>Before exploring this relation further, we must highlight the computational efficiency of Eq. 12, compared to the prevalent method of extracting patches explicitly and solving a general regression problem. For example, Ridge Regression has a cost of $\mathcal{O}(n^3)$ bound by the matrix inversion and products<sup><a href="#fn_1" id="reffn_1">1</a></sup>. On the other hand, all operations in Eq. 12 are element-wise $(\mathcal{O}(n))$, except for the DFT, which bounds the cost at a nearly-linear $\mathcal{O}(nlogn)$. For typical data sizes, this reduces storage and computation by several orders of magnitude.<br>在进一步探讨这种关系之前，与显式提取图像块并求解一般回归问题的流行方法相比，我们必须强调式（12）的计算效率。比如，受矩阵求逆和乘积的约束，岭回归的复杂度为$\mathcal{O}(n^3)$。另一方面，除了离散傅里叶变换之外，式（12）中的所有运算都是逐元素的（$\mathcal{O}(n)$），这将复杂度限制在近似线性的$\mathcal{O}(nlogn)$。对于典型的数据大小，这将使存储空间和计算量减少几个数量级。</p>
+<h2 id="Relationship-to-correlation-filters"><a href="#Relationship-to-correlation-filters" class="headerlink" title="Relationship to correlation filters"></a>Relationship to correlation filters</h2><p>Correlation filters have been a part of signal processing since the 80’s, with solutions to a myriad of objective functions in the Fourier domain [21], [28]. Recently, they made a reappearance as MOSSE filters [9], which have shown remarkable performance in tracking, despite their simplicity and high FPS rate.<br>自80年代以来，相关滤波器一直是信号处理领域的一部分，是傅立叶域中无数目标函数的解[21]，[28]。最近，他们以MOSSE滤波器的形式重新出现[9]，尽管它们很简单且具有高FPS，但它们在跟踪方面表现出了卓越的性能。<br>The solution to these filters looks like Eq. 12 (see Appendix A.2), but with two crucial differences. First, MOSSE filters are derived from an objective function specifically formulated in the Fourier domain. Second, the $\lambda$ regularizer is added in an ad-hoc way, to avoid division-by-zero. The derivation we showed above adds considerable insight, by specifying the starting point as Ridge Regression with cyclic shifts, and arriving at the same solution.<br>这些滤波器的解看起来像式（12）（见附录A.2），但有两个关键的区别。首先，MOSSE滤波器是由在傅立叶域中专门制定的目标函数推导出的。第二，为避免被零除，正则化参数$\lambda$以点对点的形式添加。我们之前展示的推导更加深入，从带有循环移位矩阵的岭回归开始，最终得到相同的解。</p>
+<blockquote>
+<p>为什么是附录A.2</p>
+</blockquote>
+<p>Circulant matrices allow us to enrich the toolset put forward by classical signal processing and modern correlation filters, and apply the Fourier trick to new algorithms. Over the next section we will see one such instance, in training non-linear filters.<br>循环矩阵使我们能够丰富经典信号处理和现代相关滤波器提出的工具集，并将傅立叶技巧应用于新算法。在下一节中，我们将在训练非线性滤波器中看到一个这样的实例。</p>
+<h1 id="NON-LINEAR-REGRESSION"><a href="#NON-LINEAR-REGRESSION" class="headerlink" title="NON-LINEAR REGRESSION"></a>NON-LINEAR REGRESSION</h1><p>One way to allow more powerful, non-linear regression functions $f(\mathbf{z})$ is with the “kernel trick” [23]. The most attractive quality is that the optimization problem is still linear, albeit in a different set of variables (the $dual$ space). On the downside, evaluating $f(\mathbf{z})$ typically grows in complexity with the number of samples.<br>得到更强大的非线性回归函数$f(\mathbf{z})$的一种方法是使用“核技巧”[23]。其最具吸引力的性质是优化问题仍然是线性的，尽管是在另一组变量（<strong>对偶</strong>空间）中。不利的是，评估$f(\mathbf{z})$的复杂度通常随着样本数量的增加而增加。<br>Using our new analysis tools, however, we will show that it is possible to overcome this limitation, and obtain non-linear filters that are $as\ fast\ as\ linear\ correlation\ filters$, both to train and evaluate.<br>然而，使用我们新的分析工具，不管是用于训练还是评估，我们将证明可以克服这一限制，并获得<strong>与线性相关滤波器一样快</strong>的非线性滤波器。</p>
+<h2 id="Kernel-trick-–-brief-overview"><a href="#Kernel-trick-–-brief-overview" class="headerlink" title="Kernel trick – brief overview"></a>Kernel trick – brief overview</h2><p>This section will briefly review the kernel trick, and define the relevant notation.<br>本节将简要回顾核技巧，并定义相关的符号。<br>Mapping the inputs of a linear problem to a non-linear feature-space $\varphi(\mathbf{x})$ with the kernel trick consists of:<br>使用核技巧将线性问题的输入映射到非线性特征空间$\varphi(\mathbf{x})$，其包括：<br>1)Expressing the solution $\mathbf{w}$ as a linear combination of the samples:<br>1）将解$\mathbf{w}$表示为样本的线性组合：</p>
+<script type="math/tex; mode=display">\mathbf{w}=\sum_{i}^{ }\alpha _{i}\varphi (\mathbf{x}_{i})\tag{13}</script><p>The variables under optimization are thus $\boldsymbol{\alpha}$, instead of $\mathbf{w}$. This alternative representation $\boldsymbol{\alpha}$ is said to be in the $dual\ space$, as opposed to the $primal\ space$ $\mathbf{w}$ (Representer Theorem [23, p. 89]).<br>因此，需要优化的变量是$\boldsymbol{\alpha}$，而不是$\mathbf{w}$。这种替换表示的$\boldsymbol{\alpha}$被称为在<strong>对偶空间</strong>，与$\mathbf{w}$在<strong>原始空间</strong>对应（表示定理[23，p.89]）。<br>2)Writing the algorithm in terms of dot-products $\varphi^T (\mathbf{x})\varphi(\mathbf{x}’)=\kappa (\mathbf{x},\mathbf{x}’)$, which are computed using the kernel function $\kappa$ (e.g., Gaussian or Polynomial).<br>2）以点积$\varphi^T (\mathbf{x})\varphi(\mathbf{x}’)=\kappa (\mathbf{x},\mathbf{x}’)$的形式写算法，使用核函数$\kappa$（例如，高斯核函数或多项式核函数）计算。<br>The dot-products between all pairs of samples are usually stored in a $n×n$ kernel matrix $K$, with elements<br>所有样本对之间的点积通常存储在一个$n×n$核矩阵$K$中，其中元素为</p>
+<script type="math/tex; mode=display">K_{ij}=\kappa (\mathbf{x}_{i},\mathbf{x}_{j}).\tag{14}</script><p>The power of the kernel trick comes from the implicit use of a high-dimensional feature space $\varphi(\mathbf{x})$, without ever instantiating a vector in that space. Unfortunately, this is also its greatest weakness, since the regression function’s complexity grows with the number of samples,<br>核技巧的力量来自于隐式地使用高维特征空间$\varphi(\mathbf{x})$，而无需在该空间中实例化向量。不幸的是，这也是它最大的弱点，因为回归函数的复杂度随着样本数量的增加而增加，</p>
+<script type="math/tex; mode=display">f(\mathbf{z})=\mathbf{w}^T\mathbf{z}=\sum_{i=1}^{n}\alpha _{i}\kappa (\mathbf{z},\mathbf{x}_{i}).\tag{15}</script><p>In the coming sections we will show how most drawbacks of the kernel trick can be avoided, assuming circulant data.<br>假设使用循环数据，在接下来几节，我们将展示如何避免核技巧的大多数缺点。</p>
+<h2 id="Fast-kernel-regression"><a href="#Fast-kernel-regression" class="headerlink" title="Fast kernel regression"></a>Fast kernel regression</h2><p>The solution to the kernelized version of Ridge Regression is given by [8]<br>[8]给出了岭回归的核化版本的解</p>
+<script type="math/tex; mode=display">\boldsymbol{\alpha}=(K+\lambda I)^{-1}\mathbf{y}，\tag{16}</script><p>where $K$ is the kernel matrix and $\boldsymbol{\alpha}$ is the vector of coefficients $\alpha_{i}$, that represent the solution in the dual space.<br>其中$K$是核矩阵，且$\boldsymbol{\alpha}$是系数为$\alpha_{i}$的向量，它代表对偶空间中的解。<br>Now, if we can prove that $K$ is circulant for datasets of cyclic shifts, we can diagonalize Eq. 16 and obtain a fast solution as for the linear case. This would seem to be intuitively true, but does not hold in general. The arbitrary nonlinear mapping $\varphi(\mathbf{x})$ gives us no guarantee of preserving any sort of structure. However, we can impose one condition that will allow $K$ to be circulant. It turns out to be fairly broad, and apply to most useful kernels.<br>现在，如果我们可以证明$K$对于循环移位的数据集是循环矩阵，我们就可以像线性情况下一样对角化式（16）并获得快速解。这看起来似乎是正确的，但并不总是如此。任意非线性映射$\varphi(\mathbf{x})$不能保证保留任何类型的结构。但是，我们可以附加一个条件使得$K$是循环矩阵。事实证明它非常有效，且适用于大多数有用的核函数。<br><strong>Theorem 1.</strong> Given circulant data $C(\mathbf{x})$, the corresponding kernel matrix $K$ is circulant if the kernel function satisfies $\kappa (\mathbf{x},\mathbf{x}’)=\kappa (M\mathbf{x},M\mathbf{x}’)$, for any permutation matrix $M$.<br><strong>定理1.</strong> 给定循环数据$C(\mathbf{x})$，对于任意转置矩阵$M$，如果核函数满足$\kappa (\mathbf{x},\mathbf{x}’)=\kappa (M\mathbf{x},M\mathbf{x}’)$，则对应的核矩阵$K$是循环矩阵。<br>For a proof, see Appendix A.2. What this means is that, for a kernel to preserve the circulant structure, it must treat all dimensions of the data equally. Fortunately, this includes most useful kernels.<br>有关证明，请参阅附录A.2。这意味着，对于一个为了保持循环结构的核函数，它必须同等地处理数据的所有维度。幸运的是，这包括大多数有用的核函数。<br><strong>Example 2.</strong> The following kernels satisfy Theorem 1:</p>
+<ul>
+<li>Radial Basis Function kernels – e.g., Gaussian.</li>
+<li>Dot-product kernels – e.g., linear, polynomial.</li>
+<li>Additive kernels – e.g., intersection, $\chi^2$ and Hellinger kernels [36].</li>
+<li>Exponentiated additive kernels.</li>
+</ul>
+<p><strong>例2.</strong> 下列核函数满足定理1：</p>
+<ul>
+<li>径向基核——比如，高斯核。</li>
+<li>点积核——比如，线性核，多项式核。</li>
+<li>加性核——比如，交叉核，$\chi^2$核和海林格核[36]。</li>
+<li>指数加性核。</li>
+</ul>
+<p>Checking this fact is easy, since reordering the dimensions of $\mathbf{x}$ and $\mathbf{x}’$ simultaneously does not change $\kappa (\mathbf{x},\mathbf{x}’)$ for these kernels. This applies to any kernel that combines dimensions through a commutative operation, such as sum, product, min and max.<br>检验这个事实很容易，因为同时对$\mathbf{x}$和$\mathbf{x}’$的维度重新排序，对于这些核函数，$\kappa (\mathbf{x},\mathbf{x}’)$并没有改变。这适用于通过一种可交换操作（如和，积，最小，最大）组合维度的任何核函数。<br>Knowing which kernels we can use to make $K$ circulant, it is possible to diagonalize Eq. 16 as in the linear case, obtaining<br>知道我们可以使用哪些核函数使得$K$为循环矩阵，就可以像线性情况一样将式（16）对角化，得到</p>
+<script type="math/tex; mode=display">\hat{\boldsymbol{\alpha}}=\frac{\hat{\mathbf{y}}} {\hat{\mathbf{k}}^{\mathbf{x}\mathbf{x}}+\lambda},\tag{17}</script><p>where $\mathbf{k}^{\mathbf{x}\mathbf{x}}$ is the first row of the kernel matrix $K=C(\mathbf{k}^{\mathbf{x}\mathbf{x}})$, and again a hat ^ denotes the DFT of a vector. A detailed derivation is in Appendix A.3.<br>其中$\mathbf{k}^{\mathbf{x}\mathbf{x}}$是核矩阵$K=C(\mathbf{k}^{\mathbf{x}\mathbf{x}})$的第一行，并且符号^表示向量的傅立叶变换。详细的推导见附录A.3。<br>To better understand the role of $\mathbf{k}^{\mathbf{x}\mathbf{x}}$, we found it useful to define a more general $kernel\ correlation$. The kernel correlation of two arbitrary vectors, $\mathbf{x}$ and $\mathbf{x}’$, is the vector $\mathbf{k}^{\mathbf{x}\mathbf{x}’}$ with elements<br>为了更好地理解$\mathbf{k}^{\mathbf{x}\mathbf{x}}$的作用，我们发现定义更通用的<strong>核相关</strong>很有用。两个任意向量$\mathbf{x}$和$\mathbf{x}’$的核相关是具有式（18）元素的向量$\mathbf{k}^{\mathbf{x}\mathbf{x}’}$</p>
+<script type="math/tex; mode=display">k_{i}^{\mathbf{x}\mathbf{x}'}=\kappa(\mathbf{x}',P^{i-1}\mathbf{x}).\tag{18}</script><p>In words, it contains the kernel evaluated for different relative shifts of the two arguments. Then $\hat{\mathbf{k}}^{\mathbf{x}\mathbf{x}}$ is the kernel correlation of $\mathbf{x}$ with itself, in the Fourier domain. We can refer to it as the $kernel\ auto-correlation$, in analogy with the linear case.<br>换句话说，它包含评估了两个参数的不同相对位移的核。那么$\hat{\mathbf{k}}^{\mathbf{x}\mathbf{x}}$就是傅立叶域中$\mathbf{x}$自身的核相关。类比线性情况，我们可以将它称为<strong>核自相关</strong>。<br>This analogy can be taken further. Since a kernel is equivalent to a dot-product in a high-dimensional space $\varphi (\cdot )$, another way to view Eq. 18 is<br>这种类比可以更进一步。由于核相当于在一个高维空间$\varphi (\cdot )$中的点积，式（18）的另一种形式是</p>
+<script type="math/tex; mode=display">k_{i}^{\mathbf{x}\mathbf{x}'}=\varphi^T(\mathbf{x}')\varphi(P^{i-1}\mathbf{x}),\tag{19}</script><p>which is the cross-correlation of $\mathbf{x}$ and $\mathbf{x}’$ in the highdimensional space $\varphi (\cdot )$.<br>这是高维空间$\varphi (\cdot )$中$\mathbf{x}$和$\mathbf{x}’$的互相关。<br>Notice how we only need to compute and operate on the kernel auto-correlation, an $n×1$ vector, which grows linearly with the number of samples. This is contrary to the conventional wisdom on kernel methods, which requires computing an $n×n$ kernel matrix, scaling quadratically with the samples. Our knowledge of the exact structure of $K$ allowed us to do better than a generic algorithm.<br>注意我们是如何只需要计算和操作核自相关（一个$n×1$向量，随样本数量线性增长）的。这与核方法的传统观点相反，后者需要计算$n×n$核矩阵，并随着样本数量的平方缩放。我们对$K$的确切结构的了解使我们能够比通用算法做得更好。<br>Finding the optimal $\boldsymbol{\alpha}$ is not the only problem that can be accelerated, due to the ubiquity of translated patches in a tracking-by-detection setting. Over the next paragraphs we will investigate the effect of the cyclic shift model on the detection phase, and even in computing kernel correlations.<br>由于在检测跟踪设定中无处不在的移位图像块，找到最优$\boldsymbol{\alpha}$并不是唯一可以被加速的问题。在接下来的段落中，我们将研究循环移位模型对检测，甚至是计算核相关的影响。</p>
+<h2 id="Fast-detection"><a href="#Fast-detection" class="headerlink" title="Fast detection"></a>Fast detection</h2><p>It is rarely the case that we want to evaluate the regression function $f(\mathbf{z})$ for one image patch in isolation. To detect the object of interest, we typically wish to evaluate $f(\mathbf{z})$ on several image locations, i.e., for several candidate patches. These patches can be modeled by cyclic shifts.<br>很少有我们想要单独评估一个图像块的回归函数$f(\mathbf{z})$的情况。为了检测感兴趣的目标，我们通常希望同时在几个图像位置上，即对于几个候选图像块评估$f(\mathbf{z})$。这些图像块可以通过循环移位来建模。<br>Denote by $K^{\mathbf{z}}$ the (asymmetric) kernel matrix between all training samples and all candidate patches. Since the samples and patches are cyclic shifts of base sample $\mathbf{x}$ and base patch $\mathbf{z}$, respectively, each element of $K^{\mathbf{z}}$ is given by $\kappa(P^{i-1}\mathbf{z},P^{j-1}\mathbf{x})$. It is easy to verify that this kernel matrix satisfies Theorem 1, and is circulant for appropriate kernels.<br>$K^{\mathbf{z}}$表示所有训练样本和所有候选图像块之间的（不对称）核矩阵。由于样本和图像块分别是基础样本$\mathbf{x}$和基础图像块$\mathbf{z}$的循环移位，因此$K^{\mathbf{z}}$的每个元素由$\kappa(P^{i-1}\mathbf{z},P^{j-1}\mathbf{x})$给出。很容易验证这个核矩阵满足定理1，并且对于适当的核是循环矩阵。<br>Similarly to Section 5.2, we only need the first row to define the kernel matrix:<br>与5.2节类似，我们只需要第一行来定义核矩阵：</p>
+<script type="math/tex; mode=display">K^{\mathbf{z}}=C(\mathbf{k}^{\mathbf{x}\mathbf{z}}),\tag{20}</script><p>where $\mathbf{k}^{\mathbf{x}\mathbf{z}}$ is the $kernel\ correlation$ of $\mathbf{x}$ and $\mathbf{z}$, as defined before.<br>如前所述，式中$\mathbf{k}^{\mathbf{x}\mathbf{z}}$是$\mathbf{x}$和$\mathbf{z}$的<strong>核相关</strong>。<br>From Eq. 15, we can compute the regression function for all candidate patches with<br>根据式（15），我们可以用式（21）计算所有候选图像块的回归函数</p>
+<script type="math/tex; mode=display">\mathbf{f}(\mathbf{z})=(K^{\mathbf{z}})^T\boldsymbol{\alpha}.\tag{21}</script><blockquote>
+<p>根据式（15），有</p>
+<script type="math/tex; mode=display">\begin{bmatrix}
+\mathbf{f}(\mathbf{z}_{1})\\ 
+\mathbf{f}(\mathbf{z}_{2})\\ 
+\vdots \\ 
+\mathbf{f}(\mathbf{z}_{m})
+\end{bmatrix}=\begin{bmatrix}
+\sum_{i=1}^{n}\alpha _{i}\kappa (\mathbf{z}_{1},\mathbf{x}_{i})\\ 
+\sum_{i=1}^{n}\alpha _{i}\kappa (\mathbf{z}_{2},\mathbf{x}_{i})\\ 
+\vdots \\ 
+\sum_{i=1}^{n}\alpha _{i}\kappa (\mathbf{z}_{m},\mathbf{x}_{i})
+\end{bmatrix}</script><script type="math/tex; mode=display">=\begin{bmatrix}
+\kappa (\mathbf{z}_{1},\mathbf{x}_{1}) & \kappa (\mathbf{z}_{1},\mathbf{x}_{2}) & \cdots  &\kappa (\mathbf{z}_{1},\mathbf{x}_{n}) \\ 
+\kappa (\mathbf{z}_{2},\mathbf{x}_{1})&  \kappa (\mathbf{z}_{2},\mathbf{x}_{2})& \cdots  & \kappa (\mathbf{z}_{2},\mathbf{x}_{n})\\ 
+ \vdots & \vdots  & \ddots  &\vdots  \\ 
+\kappa (\mathbf{z}_{m},\mathbf{x}_{1}) & \kappa (\mathbf{z}_{m},\mathbf{x}_{2}) & \cdots  & \kappa (\mathbf{z}_{m},\mathbf{x}_{n})
+\end{bmatrix}\begin{bmatrix}
+\alpha _{1}\\ 
+\alpha _{2}\\ 
+\vdots \\ 
+\alpha _{n}
+\end{bmatrix}</script><script type="math/tex; mode=display">=\begin{bmatrix}
+\kappa (\mathbf{z}_{1},\mathbf{x}_{1}) & \kappa (\mathbf{z}_{2},\mathbf{x}_{1}) & \cdots  &\kappa (\mathbf{z}_{m},\mathbf{x}_{1}) \\ 
+\kappa (\mathbf{z}_{1},\mathbf{x}_{2})&  \kappa (\mathbf{z}_{2},\mathbf{x}_{2})& \cdots  & \kappa (\mathbf{z}_{m},\mathbf{x}_{2})\\ 
+ \vdots & \vdots  & \ddots  &\vdots  \\ 
+\kappa (\mathbf{z}_{1},\mathbf{x}_{n}) & \kappa (\mathbf{z}_{2},\mathbf{x}_{n}) & \cdots  & \kappa (\mathbf{z}_{m},\mathbf{x}_{n})
+\end{bmatrix}^T\begin{bmatrix}
+\alpha _{1}\\ 
+\alpha _{2}\\ 
+\vdots \\ 
+\alpha _{n}
+\end{bmatrix}</script><script type="math/tex; mode=display">=\begin{bmatrix}
+\kappa (\mathbf{z},\mathbf{x}) & \kappa (P\mathbf{z},\mathbf{x}) & \cdots  &\kappa (P^{m-1}\mathbf{z},\mathbf{x}) \\ 
+\kappa (\mathbf{z},P\mathbf{x})&  \kappa (P\mathbf{z},P\mathbf{x})& \cdots  & \kappa (P^{m-1}\mathbf{z},P\mathbf{x})\\ 
+ \vdots & \vdots  & \ddots  &\vdots  \\ 
+\kappa (\mathbf{z},P^{n-1}\mathbf{x}) & \kappa (P\mathbf{z},P^{n-1}\mathbf{x}) & \cdots  & \kappa (P^{m-1}\mathbf{z},P^{n-1}\mathbf{x})
+\end{bmatrix}^T\begin{bmatrix}
+\alpha _{1}\\ 
+\alpha _{2}\\ 
+\vdots \\ 
+\alpha _{n}
+\end{bmatrix}</script><p>其中$m$表示$m$个候选图像块。又因为$K^{\mathbf{z}}_{ij}=\kappa(P^{i-1}\mathbf{z},P^{j-1}\mathbf{x})$，有</p>
+<script type="math/tex; mode=display">\mathbf{f}(\mathbf{z})=\begin{bmatrix}
+K^{\mathbf{z}}_{11} & K^{\mathbf{z}}_{21} & \cdots  &K^{\mathbf{z}}_{m1} \\ 
+K^{\mathbf{z}}_{12} &  K^{\mathbf{z}}_{22}& \cdots  & K^{\mathbf{z}}_{m2}\\ 
+ \vdots & \vdots  & \ddots  &\vdots  \\ 
+K^{\mathbf{z}}_{1n} & K^{\mathbf{z}}_{2n} & \cdots  & K^{\mathbf{z}}_{mn}
+\end{bmatrix}^T\boldsymbol{\alpha}=(K^{\mathbf{z}})^T\boldsymbol{\alpha}</script><p>即求得式（21）。因为惯性思维，一开始把$i$作为行的下标，$j$作为列的下标，推导出来少了个转置，后来看网上有人说<a href="https://blog.csdn.net/shenxiaolu1984/article/details/50905283" title="不应有转置" target="_blank" rel="noopener">不应有转置</a>，也有人<a href="https://blog.csdn.net/discoverer100/article/details/54345209" title="把$i$作为列的下标，$j$作为行的下标" target="_blank" rel="noopener">把$i$作为列的下标，$j$作为行的下标</a>。联想到之前看CSK的代码，作者把坐标设为[y, x]，我认为后者是对的，上面的推导参考了后者。</p>
+</blockquote>
+<p>Notice that $\mathbf{f}(\mathbf{z})$ is a vector, containing the output for $all$ cyclic shifts of $\mathbf{z}$, i.e., the full detection response. To compute Eq. 21 efficiently, we diagonalize it to obtain<br>注意到$\mathbf{f}(\mathbf{z})$是一个向量，包含$\mathbf{z}$的<strong>所有</strong>循环移位的输出，即完整的检测响应。为高效地计算式（21），我们将它对角化以得到</p>
+<script type="math/tex; mode=display">\hat{\mathbf{f}}(\mathbf{z})=\hat{\mathbf{k}}^{\mathbf{x}\mathbf{z}}\odot \hat{\boldsymbol{\alpha}}.\tag{22}</script><p>Intuitively, evaluating $f(\mathbf{z})$ at all locations can be seen as a spatial filtering operation over the kernel values $\mathbf{k}^{\mathbf{x}\mathbf{z}}$. Each $f(\mathbf{z})$ is a linear combination of the neighboring kernel values from $\mathbf{k}^{\mathbf{x}\mathbf{z}}$, weighted by the learned coefficients $\boldsymbol{\alpha}$. Since this is a filtering operation, it can be formulated more efficiently in the Fourier domain.<br>直观地，在所有位置评估$f(\mathbf{z})$可以视为对核值$\mathbf{k}^{\mathbf{x}\mathbf{z}}$的空间滤波操作。每个$f(\mathbf{z})$是$\mathbf{k}^{\mathbf{x}\mathbf{z}}$的相邻核值的线性组合，用学到的系数$\boldsymbol{\alpha}$加权。由于这是一种滤波操作，因此可以在傅里叶域中更高效地进行计算。</p>
+<h1 id="FAST-KERNEL-CORRELATION"><a href="#FAST-KERNEL-CORRELATION" class="headerlink" title="FAST KERNEL CORRELATION"></a>FAST KERNEL CORRELATION</h1><p>Even though we have found faster algorithms for training and detection, they still rely on computing one kernel correlation each ($\mathbf{k}^{\mathbf{x}\mathbf{x}}$ and $\mathbf{k}^{\mathbf{x}\mathbf{z}}$, respectively). Recall that kernel correlation consists of computing the kernel for all relative shifts of two input vectors. This represents the last standing computational bottleneck, as a naive evaluation of $n$ kernels for signals of size $n$ will have quadratic complexity. However, using the cyclic shift model will allow us to efficiently exploit the redundancies in this expensive computation.<br>尽管我们已经找到了更快的算法用于训练和检测，但它们仍依赖于计算相应的核相关（分别为$\mathbf{k}^{\mathbf{x}\mathbf{x}}$和$\mathbf{k}^{\mathbf{x}\mathbf{z}}$）。回想一下，核相关包括计算两个输入向量的所有相对移位。这代表了最后顽固的计算瓶颈，因为使用$n$个核用原始方法对大小为$n$的信号进行评估将具有平方复杂度。但是，使用循环移位模型将使我们在这种昂贵的计算中高效地利用冗余。</p>
+<h2 id="Dot-product-and-polynomial-kernels"><a href="#Dot-product-and-polynomial-kernels" class="headerlink" title="Dot-product and polynomial kernels"></a>Dot-product and polynomial kernels</h2><p>Dot-product kernels have the form $\kappa(\mathbf{x},\mathbf{x}’) =g(\mathbf{x}^T\mathbf{x}’)$, for some function $g$. Then, $\mathbf{k}^{\mathbf{x}\mathbf{x}’}$ has elements<br>对于某些函数$g$，点积核有$\kappa(\mathbf{x},\mathbf{x}’) =g(\mathbf{x}^T\mathbf{x}’)$的形式。 然后，$\mathbf{k}^{\mathbf{x}\mathbf{x}’}$有元素</p>
+<script type="math/tex; mode=display">k_{i}^{\mathbf{x}\mathbf{x}'}=\kappa(\mathbf{x}',P^{i-1}\mathbf{x})=g(\mathbf{x}'^TP^{i-1}\mathbf{x}).\tag{23}</script><p>Let $g$ also work element-wise on any input vector. This way we can write Eq. 23 in vector form<br>让$g$也可以在任何输入向量上进行逐元素运算。这样我们就可以写出式（23）的向量形式</p>
+<script type="math/tex; mode=display">\mathbf{k}^{\mathbf{x}\mathbf{x}'}=g(C(\mathbf{x})\mathbf{x}').\tag{24}</script><p>This makes it an easy target for diagonalization, yielding<br>这使它很容易对角化，得到</p>
+<script type="math/tex; mode=display">\mathbf{k}^{\mathbf{x}\mathbf{x}'}=g(\mathcal{F}^{-1}(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}')),\tag{25}</script><p>where $\mathcal{F}^{-1}$ denotes the Inverse DFT.<br>其中$\mathcal{F}^{-1}$表示逆离散傅立叶变换。<br>In particular, for a polynomial kernel $\kappa(\mathbf{x},\mathbf{x}’)=(\mathbf{x}^T\mathbf{x}’+a)^b$,<br>特别地，对于一个多项式核$\kappa(\mathbf{x},\mathbf{x}’)=(\mathbf{x}^T\mathbf{x}’+a)^b$，</p>
+<script type="math/tex; mode=display">\mathbf{k}^{\mathbf{x}\mathbf{x}'}=(\mathcal{F}^{-1}(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}')+a)^b.\tag{26}</script><p>Then, computing the kernel correlation for these particular kernels can be done using only a few DFT/IDFT and element-wise operations, in $\mathcal{O}(nlogn)$ time.<br>然后，可以在$\mathcal{O}(nlogn)$时间内，仅使用少量离散傅立叶变换/逆离散傅立叶变换和逐元素运算来计算这些特殊核的核相关。</p>
+<h2 id="Radial-Basis-Function-and-Gaussian-kernels"><a href="#Radial-Basis-Function-and-Gaussian-kernels" class="headerlink" title="Radial Basis Function and Gaussian kernels"></a>Radial Basis Function and Gaussian kernels</h2><p>RBF kernels have the form $\kappa(\mathbf{x},\mathbf{x}’)=h(\left | \mathbf{x}-\mathbf{x}’ \right |^2)$, for some function $h$. The elements of $\mathbf{k}^{\mathbf{x}\mathbf{x}’}$ are<br>对于某些函数$h$，径向基核具有$\kappa(\mathbf{x},\mathbf{x}’)=h(\left | \mathbf{x}-\mathbf{x}’ \right |^2)$的形式，$\mathbf{k}^{\mathbf{x}\mathbf{x}’}$的元素为</p>
+<script type="math/tex; mode=display">k_{i}^{\mathbf{x}\mathbf{x}'}=\kappa(\mathbf{x}',P^{i-1}\mathbf{x})=h(\left \| \mathbf{x}'-P^{i-1}\mathbf{x} \right \|^2)\tag{27}</script><p>We will show (Eq. 29) that this is actually a special case of a dot-product kernel. We only have to expand the norm,<br>我们将展示式（29）实际上是点积核的一个特例。我们只需要展开范数，</p>
+<script type="math/tex; mode=display">k_{i}^{\mathbf{x}\mathbf{x}'}=h(\left \| \mathbf{x} \right \|^2+\left \| \mathbf{x}' \right \|^2-2\mathbf{x}'^TP^{i-1}\mathbf{x}).\tag{28}</script><p>The permutation $P^{i-1}$ does not affect the norm of $\mathbf{x}$ due to Parseval’s Theorem [21]. Since $\left | \mathbf{x} \right |^2$ and $\left | \mathbf{x}’ \right |^2$ are constant w.r.t. $i$, Eq. 28 has the same form as a dot-product kernel (Eq. 23). Leveraging the result from the previous section,<br>根据帕塞瓦尔定理，置换矩阵$P^{i-1}$不影响$\mathbf{x}$的范数[21]。因为$\left | \mathbf{x} \right |^2$和$\left | \mathbf{x}’ \right |^2$是关于$i$的常数，式（28）具有和点积核（式（23））相同的形式。 利用上一节的结果，</p>
+<script type="math/tex; mode=display">\mathbf{k}^{\mathbf{x}\mathbf{x}'}=h(\left \| \mathbf{x} \right \|^2+\left \| \mathbf{x}' \right \|^2-2\mathcal{F}^{-1}(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}')).\tag{29}</script><p>As a particularly useful special case, for a Gaussian kernel $\kappa(\mathbf{x},\mathbf{x}’)=exp(-\frac{1}{\sigma^2}\left | \mathbf{x}-\mathbf{x}’ \right |^2)$ we get<br>作为一个特别有用的特例，对于高斯核$\kappa(\mathbf{x},\mathbf{x}’)=exp(-\frac{1}{\sigma^2}\left | \mathbf{x}-\mathbf{x}’ \right |^2)$我们得到</p>
+<script type="math/tex; mode=display">\mathbf{k}^{\mathbf{x}\mathbf{x}'}=exp(-\frac{1}{\sigma^2}(\left \| \mathbf{x} \right \|^2+\left \| \mathbf{x}' \right \|^2-2\mathcal{F}^{-1}(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}'))).\tag{30}</script><p>As before, we can compute the full kernel correlation in only $\mathcal{O}(n log n)$ time.<br>和之前一样，我们可以在时间复杂度只为$\mathcal{O}(nlogn)$的情况下计算整个核相关。</p>
+<h2 id="Other-kernels"><a href="#Other-kernels" class="headerlink" title="Other kernels"></a>Other kernels</h2><p>The approach from the preceding two sections depends on the kernel value being unchanged by unitary transformations, such as the DFT. This does not hold in general for other kernels, e.g. intersection kernel. We can still use the fast training and detection results (Sections 5.2 and 5.3), but kernel correlation must be evaluated by a more expensive sliding window method.<br>前两小节的方法依赖于核值经过酉变换（比如离散傅立叶变换）后保持不变。这通常不适用于其他核，例如交叉核。我们仍然可以使用快速训练和检测的结果（第5.2和5.3节），但必须通过代价更昂贵的滑窗法来计算核相关。</p>
+<h1 id="MULTIPLE-CHANNELS"><a href="#MULTIPLE-CHANNELS" class="headerlink" title="MULTIPLE CHANNELS"></a>MULTIPLE CHANNELS</h1><p>In this section, we will see that working in the dual has the advantage of allowing multiple channels (such as the orientation bins of a HOG descriptor [20]) by simply summing over them in the Fourier domain. This characteristic extends to the linear case, simplifying the recently-proposed multichannel correlation filters [31], [32], [33] considerably, under specific conditions.<br>在本节中，我们将看到在对偶空间中进行计算的优点是应用多通道（例如方向梯度直方图描述子的方向角度[20]）时只需在傅立叶域中对它们进行求和。这种特性扩展到线性情况后，在特定条件下显著简化了最近提出的多通道相关滤波器[31]，[32]，[33]。</p>
+<h2 id="General-case"><a href="#General-case" class="headerlink" title="General case"></a>General case</h2><p>To deal with multiple channels, in this section we will assume that a vector $\mathbf{x}$ concatenates the individual vectors for $C$ channels (e.g. 31 gradient orientation bins for a HOG variant [20]), as $\mathbf{x}=\left [ \mathbf{x}_{1},\ldots,\mathbf{x}_{C} \right ]$.<br>为了处理多通道，在本节中我们将假设向量$\mathbf{x}$连接$C$个通道的单通道向量（例如HOG变种[20]的31个梯度方向角度），如$\mathbf{x}=\left [ \mathbf{x}_{1},\ldots,\mathbf{x}_{C} \right ]$。<br>Notice that all kernels studied in Section 6 are based on either dot-products or norms of the arguments. A dotproduct can be computed by simply summing the individual dot-products for each channel. By linearity of the DFT, this allows us to sum the result for each channel in the Fourier domain. As a concrete example, we can apply this reasoning to the Gaussian kernel, obtaining the multichannel analogue of Eq. 30,<br>注意到第6节中研究的所有核都基于参数的点积或范数。可以通过简单地对每个通道的各个点积进行求和来计算点积。通过离散傅立叶变换的线性特性，这使得我们可以对傅里叶域中各个通道的结果求和。作为一个具体的例子，我们可以将这个推理应用于高斯核，得到类似式（30）的多通道版本</p>
+<script type="math/tex; mode=display">\mathbf{k}^{\mathbf{x}\mathbf{x}'}=exp(-\frac{1}{\sigma^2}(\left \| \mathbf{x} \right \|^2+\left \| \mathbf{x}' \right \|^2-2\mathcal{F}^{-1}(\sum _{C}\hat{\mathbf{x}}^*_{C}\odot\hat{\mathbf{x}}'_{C}))).\tag{31}</script><p>It is worth emphasizing that the integration of multiple channels does not result in a more difficult inference problem – we merely have to sum over the channels when computing kernel correlation.<br>值得强调的是，结合多通道并不会导致更苦难的推理问题——我们只需在计算核相关时对各个通道求和。</p>
+<h2 id="Linear-kernel"><a href="#Linear-kernel" class="headerlink" title="Linear kernel"></a>Linear kernel</h2><p>For a linear kernel $\kappa(\mathbf{x},\mathbf{x}’)=\mathbf{x}^T\mathbf{x}’$, the multi-channel extension from the previous section simply yields<br>对于线性核$\kappa(\mathbf{x},\mathbf{x}’)=\mathbf{x}^T\mathbf{x}’$，前一节中的多通道扩展仅产生</p>
+<script type="math/tex; mode=display">\mathbf{k}^{\mathbf{x}\mathbf{x}'}=\mathcal{F}^{-1}(\sum _{C}\hat{\mathbf{x}}^*_{C}\odot\hat{\mathbf{x}}'_{C}).\tag{32}</script><p>We named it the Dual Correlation Filter (DCF). This filter is linear, but trained in the dual space $\boldsymbol{\alpha}$. We will discuss the advantages over other multi-channel filters shortly.<br>我们将其命名为对偶相关滤波器（DCF）。这个滤波器是线性的，但是在对偶空间$\boldsymbol{\alpha}$中训练，我们将简单讨论其他多通道滤波器的优势。<br>A recent extension of linear correlation filters to multiple channels was discovered independently by three groups [31], [32], [33]. They allow much faster training times than unstructured algorithms, by decomposing the problem into one linear system for each DFT frequency, in the case of Ridge Regression. Henriques et al. [31] additionally generalize the decomposition to other training algorithms.<br>线性相关滤波器扩展到多通道最近由三组研究者独立发现[31]，[32]，[33]。在岭回归的情况下，通过将问题分解为每个离散傅立叶变换频率的一个线性系统，它们比非结构化算法的训练速度更快。Henriques et al.[31]还将这种分解推广到其他训练算法。<br>However, Eq. 32 suggests that, by working in the dual with a linear kernel, we can train a linear classifier with $multiple$ channels, but using only $element-wise$ operations. This may be unexpected at first, since those works require more expensive matrix inversions [31], [32], [33].<br>然而，式（32）表明，通过在对偶空间计算线性核，我们可以仅使用<strong>逐元素</strong>运算训练于<strong>多</strong>通道线性分类器。这可能一开始很意外，因为这些计算原本需要代价更昂贵的矩阵求逆[31]，[32]，[33]。<br>We resolve this discrepancy by pointing out that this is only possible because we only consider a $single$ base sample $\mathbf{x}$. In this case, the kernel matrix $K=XX^T$ is $n×n$, regardless of the number of features or channels. It relates the $n$ cyclic shifts of the base sample, and can be diagonalized by the $n$ basis of the DFT. Since $K$ is fully diagonal we can use solely element-wise operations. However, if we consider two base samples, $K$ becomes $2n×2n$ and the $n$ DFT basis are no longer enough to fully diagonalize it. This incomplete diagonalization (blockdiagonalization) requires more expensive operations to deal with, which were proposed in those works.<br>解决这种差异是可能的，因为我们只考虑<strong>单个</strong>基础样本$\mathbf{x}$。在这种情况下，不管特征和通道的数量，核矩阵$K=XX^T$都是$n×n$矩阵。它涉及基础样本的$n$个循环移位，并且可以通过离散傅里叶变换的$n$个基来对角化。由于$K$是完全对角阵，我们可以只使用逐元素运算。但是，如果我们考虑两个基础样本，$K$变为$2n×2n$矩阵，而$n$个离散傅立叶变换的基不再足以使其完全对角化。这种不完全对角化（块对角化）需要代价更昂贵的操作来处理，即以前那些论文中提出的。<br>With an interestingly symmetric argument, training with multiple base samples and a single channel can be done in the primal, with only element-wise operations (Appendix A.6). This follows by applying the same reasoning to the non-centered covariance matrix $X^TX$, instead of $XX^T$ . In this case we obtain the original MOSSE filter [9].<br>通过一个有趣的对称参数，只使用逐元素运算，多个基础样本和单通道的训练可以在原始空间中完成（附录A.6）。接下来，将相同的推理应用于非中心化的协方差矩阵$X^TX$，而不是$XX^T$。 在这种情况下，我们获得了原始的MOSSE滤波器[9]。<br>In conclusion, for fast element-wise operations we can choose multiple channels (in the dual, obtaining the DCF) or multiple base samples (in the primal, obtaining the MOSSE), but not both at the same time. This has an important impact on time-critical applications, such as tracking. The general case [31] is much more expensive and suitable mostly for offline training applications.<br>总之，对于快速逐元素运算，我们可以选择多通道（在对偶空间中，获得DCF）或多个基础样本（在原始空间中，获得MOSSE），但不能同时选择两者。这对实时性要求高的应用程序（如跟踪）具有重要的影响。一般情况[31]的代价更昂贵，主要适用于离线训练应用。</p>
+<h1 id="EXPERIMENTS"><a href="#EXPERIMENTS" class="headerlink" title="EXPERIMENTS"></a>EXPERIMENTS</h1><h2 id="Tracking-pipeline"><a href="#Tracking-pipeline" class="headerlink" title="Tracking pipeline"></a>Tracking pipeline</h2><p>We implemented in Matlab two simple trackers based on the proposed Kernelized Correlation Filter (KCF), using a Gaussian kernel, and Dual Correlation Filter (DCF), using a linear kernel. We do not report results for a polynomial kernel as they are virtually identical to those for the Gaussian kernel, and require more parameters. We tested two further variants: one that works directly on the raw pixel values, and another that works on HOG descriptors with a cell size of 4 pixels, in particular Felzenszwalb’s variant [20], [22]. Note that our linear DCF is equivalent to MOSSE [9] in the limiting case of a single channel (raw pixels), but it has the advantage of also supporting multiple channels (e.g. HOG). Our tracker requires few parameters, and we report the values that we used, fixed for all videos, in Table 2.<br>我们在Matlab中实现了两个简单的跟踪器，一个是使用高斯核，基于所提出的核相关滤波器（KCF），另一个是使用线性核，基于所提出的对偶相关滤波器（DCF）。我们不给出多项式核的结果，因为它们实际上与高斯核的结果相同，并且需要更多的参数。我们进一步测试了两个变种：一个直接作用于原始像素值，另一个作用于4像素单元大小的HOG特征描述子，特别是Felzenszwalb变种[20]，[22]。注意到在单个通道（原始像素）的限制条件下，我们的线性DCF等同于MOSSE [9]，但它具有支持多通道（例如HOG）的优点。我们的跟踪器只需要少量的参数，我们会在表2中给出我们在所有视频中使用的参数值。<br>The bulk of the functionality of the KCF is presented as Matlab code in Algorithm 1. Unlike the earlier version of this work [29], it is prepared to deal with multiple channels, as the 3^rd^ dimension of the input arrays. It implements 3 functions: train (Eq. 17), detect (Eq. 22), and kernel_correlation (Eq. 31), which is used by the first two functions.<br>KCF的功能主体在算法1中以Matlab代码给出。与此工作的早期版本[29]不同，它准备处理多通道，作为输入数组的第三维。它实现了3个函数：train（式（17）），detect（式（22））和kernel_correlation（式（31）），kernel_correlation被前两个函数调用。<br>The pipeline for the tracker is intentionally simple, and does not include any heuristics for failure detection or motion modeling. In the first frame, we train a model with the image patch at the initial position of the target. This patch is larger than the target, to provide some context. For each new frame, we detect over the patch at the previous position, and the target position is updated to the one that yielded the maximum value. Finally, we train a new model at the new position, and linearly interpolate the obtained values of $\boldsymbol{\alpha}$ and $\mathbf{x}$ with the ones from the previous frame, to provide the tracker with some memory.<br>跟踪器的流程被有意简化，并且不包含用于误检测或运动建模的任何启发法。在第一帧中，我们使用目标初始位置的图像块来训练模型。此图像块大于目标大小，以提供一些背景信息。对于每一帧新图像，我们检测前一帧目标位置在新一帧图像中对应位置的图像块，并将目标位置更新为产生最大值的位置。最后，我们在新位置训练一个新模型，并将新得到的$\boldsymbol{\alpha}$和$\mathbf{x}$与前一帧的$\boldsymbol{\alpha}$和$\mathbf{x}$进行线性插值，为跟踪器提供一些记忆性。</p>
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><h2 id="Experiments-on-the-full-dataset"><a href="#Experiments-on-the-full-dataset" class="headerlink" title="Experiments on the full dataset"></a>Experiments on the full dataset</h2><h2 id="Experiments-with-sequence-attributes"><a href="#Experiments-with-sequence-attributes" class="headerlink" title="Experiments with sequence attributes"></a>Experiments with sequence attributes</h2><h1 id="CONCLUSIONS-AND-FUTURE-WORK"><a href="#CONCLUSIONS-AND-FUTURE-WORK" class="headerlink" title="CONCLUSIONS AND FUTURE WORK"></a>CONCLUSIONS AND FUTURE WORK</h1><p>In this work, we demonstrated that it is possible to analytically model natural image translations, showing that under some conditions the resulting data and kernel matrices become circulant. Their diagonalization by the DFT provides a general blueprint for creating fast algorithms that deal with translations. We have applied this blueprint to linear and kernel ridge regression, obtaining state-of-the-art trackers that run at hundreds of FPS and can be implemented with only a few lines of code. Extensions of our basic approach seem likely to be useful in other problems. Since the first version of this work, circulant data has been exploited successfully for other algorithms in detection [31] and video event retrieval [30]. An interesting direction for further work is to relax the assumption of periodic boundaries, which may improve performance. Many useful algorithms may also be obtained from the study of other objective functions with circulant data, including classical filters such as SDF or MACE [25], [26], and more robust loss functions than the squared loss. We also hope to generalize this framework to other operators, such as affine transformations or non-rigid deformations.<br>在本文工作中，我们证明了可以对自然图像位移进行分析建模，表明在某些条件下，生成的数据和核矩阵是循环的。通过离散傅立叶变换对它们进行对角化提供了一个整体思路，使得能够创造出处理位移图像的快速算法。我们已将此思路应用于线性和核化的岭回归，获得最先进的跟踪器，其运行时能达到几百FPS并且只需少量代码即可实现。我们基础方法的扩展似乎可用于其他问题。自从这项工作的初始版本以来，循环数据已成功应用于检测[31]和视频事件检索[30]中的其他算法。未来工作的一个有趣方向是放宽周期性边界的假设，这可能会提高性能。许多有用的算法也可以从使用循环数据的其它目标函数（包括如SDF或MACE[25]，[26]的经典滤波器），以及比平方损失更鲁棒的损失函数的研究中获得。我们也希望将此框架推广到其他运算，例如仿射变换或非刚性变形。</p>
+<h1 id="ACKNOWLEDGMENT"><a href="#ACKNOWLEDGMENT" class="headerlink" title="ACKNOWLEDGMENT"></a>ACKNOWLEDGMENT</h1><h1 id="APPENDIX-A"><a href="#APPENDIX-A" class="headerlink" title="APPENDIX A"></a>APPENDIX A</h1><h2 id="A-1-Implementation-details"><a href="#A-1-Implementation-details" class="headerlink" title="A.1 Implementation details"></a>A.1 Implementation details</h2><p>As is standard with correlation filters, the input patches (either raw pixels or extracted feature channels) are weighted by a cosine window, which smoothly removes discontinuities at the image boundaries caused by the cyclic assumption [9], [21]. The tracked region has 2.5 times the size of the target, to provide some context and additional negative samples.<br>与相关滤波器一样，输入图像块（不管是原始像素值还是提取的特征通道）由余弦窗口加权，可以平滑地消除由循环假设引起的图像边界处的不连续性[9]，[21]。跟踪区域的大小是目标大小的2.5倍，以提供一些背景信息和额外的负样本。<br>Recall that the training samples consist of shifts of a base sample, so we must specify a regression target for each one in $\mathbf{y}$. The regression targets $\mathbf{y}$ simply follow a Gaussian function, which takes a value of 1 for a centered target, and smoothly decays to 0 for any other shifts, according to the spatial bandwidth $s$. Gaussian targets are smoother than binary labels, and have the benefit of reducing ringing artifacts in the Fourier domain [21].<br>回想到训练样本集由基础样本的移位组成，因此我们必须为每一个训练样本指定一个回归目标$\mathbf{y}$。回归目标$\mathbf{y}$简单地遵循高斯函数，其对于中心目标取值为1，并且任何其他位移根据空间带宽$s$平滑地衰减到0。高斯目标值比二类标签更平滑，并且具有减少傅立叶域中振铃效应的优点[21]。<br>A subtle issue is determining which element of $\mathbf{y}$ is the regression target for the centered sample, on which we will center the Gaussian function. Although intuitively it may seem to be the middle of the output plane (Fig. 6-a), it turns out that the correct choice is the top-left element (Fig. 6-b). The explanation is that, after computing a cross-correlation between two images in the Fourier domain and converting back to the spatial domain, it is the top-left element of the result that corresponds to a shift of zero [21]. Of course, since we always deal with cyclic signals, the peak of the Gaussian function must wrap around from the top-left corner to the other corners, as can be seen in Fig. 6-b. Placing the Gaussian peak in the middle of the regression target is common in some filter implementations, and leads the correlation output to be unnecessarily shifted by half a window, which must be corrected post-hoc<sup><a href="#fn_2" id="reffn_2">2</a></sup>.<br>一个微妙的问题是确定$\mathbf{y}$的哪个元素是中心样本的回归目标，我们将以该元素作为高斯函数的中心。虽然直观地看起来它可能位于输出平面的中间（图6-a），但事实证明正确的选择是左上角的元素（图6-b）。对此的解释是，在计算傅立叶域中的两个图像之间的互相关并转换回空域之后，其结果的左上角元素才对应于零移位[21]。当然，由于我们总是处理循环信号，高斯函数的峰值必须从左上角环绕到其他角，如图6-b所示。将高斯峰值放置在回归目标的中间在一些滤波器实现中是常见的，并且导致相关输出被不必要地移位半个窗口，这必须在事后修正。<br>Another common source of error is the fact that most implementations of the Fast Fourier Transform<sup><a href="#fn_3" id="reffn_3">3</a></sup> do not compute the unitary DFT. This means that the L2 norm of the signals is not preserved, unless the output is corrected by a constant factor. With some abuse of notation, we can say that the unitary DFT may be computed as<br>另一个常见错误的来源是快速傅立叶变换的大多数实现并不计算酉离散傅立叶变换的事实。这意味着除非用一个常数因子修正输出，否则不会保留信号的L2范数。稍稍滥用下符号，我们可以说酉离散傅立叶变换能用式（33）计算</p>
+<script type="math/tex; mode=display">\mathcal{F}_{\mathcal{U}}(x)=fft2(x)/sqrt(m*n),\tag{33}</script><p>where the input $x$ has size $m×n$, and similarly for the inverse DFT,<br>式中输入$x$的大小是$m×n$，类似地，对于逆离散傅立叶变换</p>
+<script type="math/tex; mode=display">\mathcal{F}^{-1}_{\mathcal{U}}(x)=ifft2(x)*sqrt(m*n).\tag{34}</script><blockquote>
+<p>其中fft2()和ifft2()都是Matlab内置函数，我想也是因为这个原因，所以论文中离散傅立叶变换矩阵前面才会有一个$\frac{1}{\sqrt{N}}$系数。</p>
+</blockquote>
+<h2 id="A-2-Proof-of-Theorem-1"><a href="#A-2-Proof-of-Theorem-1" class="headerlink" title="A.2 Proof of Theorem 1"></a>A.2 Proof of Theorem 1</h2><p>Under the theorem’s assumption that $\kappa (\mathbf{x},\mathbf{x}’)=\kappa (M\mathbf{x},M\mathbf{x}’)$, for any permutation matrix $M$, then<br>根据定理的假设，对于任何置换矩阵$M$，$\kappa (\mathbf{x},\mathbf{x}’)=\kappa (M\mathbf{x},M\mathbf{x}’)$，则</p>
+<script type="math/tex; mode=display">K_{ij}=\kappa (P^{i}\mathbf{x},P^{j}\mathbf{x})\tag{35}</script><script type="math/tex; mode=display">=\kappa (P^{-i}P^{i}\mathbf{x},P^{-i}P^{j}\mathbf{x}).\tag{36}</script><p>Using known properties of permutation matrices, this reduces to<br>使用置换矩阵的已知属性，化简为</p>
+<script type="math/tex; mode=display">K_{ij}=\kappa (\mathbf{x},P^{j-i}\mathbf{x}).\tag{37}</script><p>By the cyclic nature of $P$, it repeats every $n$th power, i.e. $P^n = P^0$. As such, Eq. 37 is equivalent to<br>根据$P$的循环性质，它每n次幂都会重复，即$P^n = P^0$。因此，式（37）相当于</p>
+<script type="math/tex; mode=display">K_{ij}=\kappa (\mathbf{x},P^{(j-i)\ mod\ n}\mathbf{x}),\tag{38}</script><p>where mod is the modulus operation (remainder of division by $n$).<br>式中mod是取模运算（除以$n$后的余数）。<br>We now use the fact the elements of a circulant matrix $X=C(\mathbf{x})$ (Eq. 6) satisfy<br>现在循环矩阵$X=C(\mathbf{x})$（式（6））的元素满足式（39）</p>
+<script type="math/tex; mode=display">X_{ij}=x_{((j-i)\ mod\ n)+1},\tag{39}</script><p>that is, a matrix is circulant if its elements only depend on $(j-i)\ mod\ n$. It is easy to check that this condition is satisfied by Eq. 6, and in fact it is often used as the definition of a circulant matrix [34].<br>也就是说，如果一个矩阵的元素仅取决于$(j-i)\ mod\ n$，则该矩阵是循环矩阵。很容易验证式（6）满足这个条件，且实际上它经常被用作循环矩阵的定义[34]。<br>Because $K_{ij}$ also depends on $(j-i)\ mod\ n$, we must conclude that $K$ is circulant as well, finishing our proof.<br>因为$K_{ij}$也取决于$(j-i)\ mod\ n$，我们必得出$K$也是循环矩阵的结论，证毕。</p>
+<h2 id="A-3-Kernel-Ridge-Regression-with-Circulant-data"><a href="#A-3-Kernel-Ridge-Regression-with-Circulant-data" class="headerlink" title="A.3 Kernel Ridge Regression with Circulant data"></a>A.3 Kernel Ridge Regression with Circulant data</h2><p>This section shows a more detailed derivation of Eq. 17. We start by replacing $K = C(\mathbf{k}^{\mathbf{x}\mathbf{x}})$ in the formula for Kernel Ridge Regression, Eq. 16, and diagonalizing it<br>本节给出了式（17）的更详细的推导。我们首先在核岭回归公式（式（16））中替换$K = C(\mathbf{k}^{\mathbf{x}\mathbf{x}})$，并对它进行对角化.</p>
+<script type="math/tex; mode=display">\boldsymbol{\alpha}=(C(\mathbf{k}^{\mathbf{x}\mathbf{x}})+\lambda I)^{-1}\mathbf{y}\tag{40}</script><script type="math/tex; mode=display">=(Fdiag(\hat{\mathbf{k}}^{\mathbf{x}\mathbf{x}})F^H+\lambda I)^{-1}\mathbf{y}.\tag{41}</script><p>By simple linear algebra, and the unitarity of $F(FF^H = I)$,<br>通过简单的线性代数和$F$的酉性$(FF^H = I)$，</p>
+<script type="math/tex; mode=display">\boldsymbol{\alpha}=(Fdiag(\hat{\mathbf{k}}^{\mathbf{x}\mathbf{x}})F^H+\lambda FIF^H)^{-1}\mathbf{y}\tag{42}</script><script type="math/tex; mode=display">=Fdiag(\hat{\mathbf{k}}^{\mathbf{x}\mathbf{x}}+\lambda)^{-1}F^H\mathbf{y},\tag{43}</script><p>which is equivalent to<br>式（43）等价于</p>
+<script type="math/tex; mode=display">F^H\boldsymbol{\alpha}=diag(\hat{\mathbf{k}}^{\mathbf{x}\mathbf{x}}+\lambda)^{-1}F^H\mathbf{y}.\tag{44}</script><p>Since for any vector $F\mathbf{z}=\hat{\mathbf{z}}$, we have<br>因为对任意向量$F\mathbf{z}=\hat{\mathbf{z}}$，有</p>
+<script type="math/tex; mode=display">\hat{\boldsymbol{\alpha}}^*=diag(\frac{1}{\hat{\mathbf{k}}^{\mathbf{x}\mathbf{x}}+\lambda})\hat{\mathbf{y}}^*.\tag{45}</script><p>Finally, because the product of a diagonal matrix and a vector is simply their element-wise product,<br>最后，因为对角阵和向量的乘积只是它们的逐元素乘积，</p>
+<script type="math/tex; mode=display">\hat{\boldsymbol{\alpha}}^*=\frac{\hat{\mathbf{y}}^*} {\hat{\mathbf{k}}^{\mathbf{x}\mathbf{x}}+\lambda}.\tag{46}</script><h2 id="A-4-Derivation-of-fast-detection-formula"><a href="#A-4-Derivation-of-fast-detection-formula" class="headerlink" title="A.4 Derivation of fast detection formula"></a>A.4 Derivation of fast detection formula</h2><p>To diagonalize Eq. 21, we use the same properties as in the previous section. We have<br>为了对角化式（21），我们使用与上一节相同的性质。我们有</p>
+<script type="math/tex; mode=display">\mathbf{f}(\mathbf{z})=(C(\mathbf{k}^{\mathbf{x}\mathbf{z}}))^T\boldsymbol{\alpha} \tag{47}</script><script type="math/tex; mode=display">=(Fdiag(\hat{\mathbf{k}}^{\mathbf{x}\mathbf{z}})F^H)^T\boldsymbol{\alpha}\tag{48}</script><script type="math/tex; mode=display">=F^Hdiag(\hat{\mathbf{k}}^{\mathbf{x}\mathbf{z}})F\boldsymbol{\alpha}\tag{49}</script><p>which is equivalent to<br>式（49）等价于</p>
+<script type="math/tex; mode=display">F\mathbf{f}(\mathbf{z})=diag(\hat{\mathbf{k}}^{\mathbf{x}\mathbf{z}})F\boldsymbol{\alpha}.\tag{50}</script><p>Replicating the same final steps from the previous section,<br>与上一节的最后一步相同，</p>
+<script type="math/tex; mode=display">\hat{\mathbf{f}}(\mathbf{z})=\hat{\mathbf{k}}^{\mathbf{x}\mathbf{z}}\odot \hat{\boldsymbol{\alpha}}.\tag{51}</script><h2 id="A-5-Linear-Ridge-Regression-with-Circulant-data"><a href="#A-5-Linear-Ridge-Regression-with-Circulant-data" class="headerlink" title="A.5 Linear Ridge Regression with Circulant data"></a>A.5 Linear Ridge Regression with Circulant data</h2><p>This is a more detailed version of the steps from Section 4.4. It is very similar to the kernel case. We begin by replacing Eq. 10 in the formula for Ridge Regression, Eq. 3.<br>这是第4.4节中步骤的更详细版本。它与核化非常相似。我们首先将式（10）代入岭回归公式（式（3））。</p>
+<script type="math/tex; mode=display">\mathbf{w}=(Fdiag(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}})F^H+\lambda I)^{-1}X^{H}\mathbf{y} \tag{52}</script><p>By simple algebra, and the unitarity of F, we have<br>通过简单的线性代数和F的酉性，我们有</p>
+<script type="math/tex; mode=display">\mathbf{w}=(Fdiag(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}})F^H+\lambda F^HIF)^{-1}X^{H}\mathbf{y} \tag{53}</script><script type="math/tex; mode=display">=(Fdiag(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda)^{-1}F^H)X^{H}\mathbf{y} \tag{54}</script><script type="math/tex; mode=display">=Fdiag(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda)^{-1}F^HFdiag(\hat{\mathbf{x}})F^H\mathbf{y} \tag{55}</script><script type="math/tex; mode=display">=Fdiag(\frac{\hat{\mathbf{x}}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda})F^H\mathbf{y} .\tag{56}</script><p>Then, this is equivalent to<br>然后，等价于</p>
+<script type="math/tex; mode=display">F\mathbf{w}=diag(\frac{\hat{\mathbf{x}}^{*}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda})F\mathbf{y} ,\tag{57}</script><p>and since for any vector $F\mathbf{z}=\hat{\mathbf{z}}$,<br>并因为对任意向量$F\mathbf{z}=\hat{\mathbf{z}}$</p>
+<script type="math/tex; mode=display">\hat{\mathbf{w}}=diag(\frac{\hat{\mathbf{x}}^{*}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda})\hat{\mathbf{y}} .\tag{58}</script><p>We may go one step further, since the product of a diagonal matrix and a vector is just their element-wise product.<br>我们可以更进一步，因为对角阵和向量的乘积只是它们的逐元素乘积。</p>
+<script type="math/tex; mode=display">\hat{\mathbf{w}}=\frac{\hat{\mathbf{x}^{*}}\odot \hat{\mathbf{y}}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda} .\tag{59}</script><blockquote>
+<p>个人觉得应该是这样</p>
+<script type="math/tex; mode=display">\mathbf{w}=(Fdiag(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}})F^H+\lambda FIF^H)^{-1}X^{H}\mathbf{y}</script><script type="math/tex; mode=display">=(Fdiag(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda)^{-1}F^H)X^{H}\mathbf{y}</script><script type="math/tex; mode=display">=Fdiag(\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda)^{-1}F^HFdiag(\hat{\mathbf{x}}^{*})F^H\mathbf{y}</script><script type="math/tex; mode=display">=Fdiag(\frac{\hat{\mathbf{x}}^{*}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda})F^H\mathbf{y}</script><p>左右两边同时左乘$F^H$</p>
+<script type="math/tex; mode=display">\hat{\mathbf{w}}^{*}=diag(\frac{\hat{\mathbf{x}}^{*}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda})\hat{\mathbf{y}}^{*}</script><script type="math/tex; mode=display">\hat{\mathbf{w}}^{*}=\frac{\hat{\mathbf{x}}^{*}\odot\hat{\mathbf{y}}^{*}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda}</script><script type="math/tex; mode=display">\hat{\mathbf{w}}=\frac{\hat{\mathbf{x}}\odot\hat{\mathbf{y}}}{\hat{\mathbf{x}}^*\odot\hat{\mathbf{x}}+\lambda}</script></blockquote>
+<h2 id="A-6-MOSSE-filter"><a href="#A-6-MOSSE-filter" class="headerlink" title="A.6 MOSSE filter"></a>A.6 MOSSE filter</h2><p>The only difference between Eq. 12 and the MOSSE filter [9] is that the latter minimizes the error over (cyclic shifts of) multiple base samples $\mathbf{x}_{i}$, while Eq. 12 is defined for a single base sample $\mathbf{x}$. This was done for clarity of presentation, and the general case is easily derived. Note also that MOSSE does not support multiple channels, which we do through our dual formulation.<br>式（12）和MOSSE滤波器[9]的唯一区别是后者最小化多个基础样本$\mathbf{x}_{i}$（的循环移位）的误差，而式（12）是针对单个基础样本$\mathbf{x}$定义的。这样做是为了能清晰地呈现，并且很容易推导一般情况。另请注意，MOSSE不支持多通道，而我们通过对偶空间的公式来完成对多通道的支持。<br>The cyclic shifts of each base sample $\mathbf{x}_{i}$ can be expressed in a circulant matrix $X_{i}$. Then, replacing the data matrix $X’=\begin{bmatrix}<br>X_{1}\\<br>X_{2}\\<br>\vdots<br>\end{bmatrix}$ in Eq. 3 results in<br>每个基础样本$\mathbf{x}_{i}$的循环移位可以用循环矩阵$X_{i}$表示。然后，用$X’=\begin{bmatrix}<br>X_{1}\\<br>X_{2}\\<br>\vdots<br>\end{bmatrix}$替换式（3）中的数据矩阵，得到</p>
+<script type="math/tex; mode=display">\mathbf{w}=\sum_{j}^{ }(\sum_{i}^{ }X_{i}^{H}X_{i}+\lambda I)^{-1}X_{j}^{H}\mathbf{y},\tag{60}</script><p>by direct application of the rule for products of block matrices. Factoring the bracketed expression,<br>通过直接应用块矩阵乘积的规则。分解括号内的表达式，</p>
+<script type="math/tex; mode=display">\mathbf{w}=(\sum_{i}^{ }X_{i}^{H}X_{i}+\lambda I)^{-1}(\sum_{i}^{ }X_{i}^{H})\mathbf{y}.\tag{61}</script><p>Eq. 61 looks exactly like Eq. 3, except for the sums. It is then trivial to follow the same steps as in Section 4.4 to diagonalize it, and obtain the filter equation<br>除了求和符号，式（61）看起来和式（3）很像。然后，繁琐地按照第4.4节中的相同步骤对其进行对角化，可得到滤波器方程</p>
+<script type="math/tex; mode=display">\hat{\mathbf{w}}=\frac{\sum_{i}\hat{\mathbf{x}}_{i}^{*}\odot \hat{\mathbf{y}}}{\sum_{i}\hat{\mathbf{x}}_{i}^{*}\odot \hat{\mathbf{x}_{i}}+\lambda}.\tag{62}</script><blockquote>
+<p>这里分子上的$\hat{\mathbf{x}}_{i}$是否也不需要复共轭。</p>
+</blockquote>
+<p><sup><a href="#fn_1" id="reffn_1">1</a></sup>:We remark that the complexity of training algorithms is usually reported in terms of the number of samples $n$, disregarding the number of features $m$. Since in our case $m = n$ ($X$ is square), we conflate the two quantities. For comparison, the fastest SVM solvers have “linear” complexity in the samples $\mathcal{O}(mn)$, but under the same conditions $m=n$ would actually exhibit quadratic complexity, $\mathcal{O}(n^2)$.<br>我们注意到，训练算法的复杂度通常以样本数$n$的形式表示，而忽略了特征数量$m$。 因为在我们的例子中，$ m = n $（$ X $是方阵），我们将两个数混为一谈。为了进行比较，最快的支持向量机解法在样本中具有“线性”复杂度$\mathcal{O}(mn)$，但在$ m = n $的条件下，实际上会表现出平方复杂度，$\mathcal{O}(n^2)$。<br><sup><a href="#fn_2" id="reffn_2">2</a></sup>:This is usually done by switching the quadrants of the output, e.g. with the Matlab built-in function fftshift. It has the same effect as shifting Fig. 6-b to look like Fig. 6-a.<br>这通常是通过交换输出的象限来完成的，例如，使用Matlab内置函数。fftshift。它的效果等效于将图6-b转换为图6-a。<br><sup><a href="#fn_3" id="reffn_3">3</a></sup>:For example Matlab, NumPy, Octave and the FFTW library.<br>比如Matlab, NumPy, Octave和FFTW库。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Sarieli
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2018/11/18/High-Speed Tracking with Kernelized Correlation Filters 渣翻/" title="High-Speed Tracking with Kernelized Correlation Filters 渣翻">http://yoursite.com/2018/11/18/High-Speed Tracking with Kernelized Correlation Filters 渣翻/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/相关滤波/" rel="tag"># 相关滤波</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/01/Exploiting the Circulant Structure of Tracking-by-detection with Kernels 渣翻/" rel="next" title="Exploiting the Circulant Structure of Tracking-by-detection with Kernels 渣翻">
+                <i class="fa fa-chevron-left"></i> Exploiting the Circulant Structure of Tracking-by-detection with Kernels 渣翻
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/12/10/Chiplet，硬件领域的服务拆分/" rel="prev" title="Chiplet，硬件领域的服务拆分">
+                Chiplet，硬件领域的服务拆分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Sarieli">
+            
+              <p class="site-author-name" itemprop="name">Sarieli</p>
+              <p class="site-description motion-element" itemprop="description">大道甚夷，而人好径</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#INTRODUCTION"><span class="nav-number">1.</span> <span class="nav-text">INTRODUCTION</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RELATED-WORK"><span class="nav-number">2.</span> <span class="nav-text">RELATED WORK</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#On-tracking-by-detection"><span class="nav-number">2.1.</span> <span class="nav-text">On tracking-by-detection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#On-sample-translations-and-correlation-filtering"><span class="nav-number">2.2.</span> <span class="nav-text">On sample translations and correlation filtering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Subsequent-work"><span class="nav-number">2.3.</span> <span class="nav-text">Subsequent work</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CONTRIBUTIONS"><span class="nav-number">3.</span> <span class="nav-text">CONTRIBUTIONS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BUILDING-BLOCKS"><span class="nav-number">4.</span> <span class="nav-text">BUILDING BLOCKS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linear-regression"><span class="nav-number">4.1.</span> <span class="nav-text">Linear regression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cyclic-shifts"><span class="nav-number">4.2.</span> <span class="nav-text">Cyclic shifts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Circulant-matrices"><span class="nav-number">4.3.</span> <span class="nav-text">Circulant matrices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Putting-it-all-together"><span class="nav-number">4.4.</span> <span class="nav-text">Putting it all together</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Relationship-to-correlation-filters"><span class="nav-number">4.5.</span> <span class="nav-text">Relationship to correlation filters</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NON-LINEAR-REGRESSION"><span class="nav-number">5.</span> <span class="nav-text">NON-LINEAR REGRESSION</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kernel-trick-–-brief-overview"><span class="nav-number">5.1.</span> <span class="nav-text">Kernel trick – brief overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fast-kernel-regression"><span class="nav-number">5.2.</span> <span class="nav-text">Fast kernel regression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fast-detection"><span class="nav-number">5.3.</span> <span class="nav-text">Fast detection</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FAST-KERNEL-CORRELATION"><span class="nav-number">6.</span> <span class="nav-text">FAST KERNEL CORRELATION</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dot-product-and-polynomial-kernels"><span class="nav-number">6.1.</span> <span class="nav-text">Dot-product and polynomial kernels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Radial-Basis-Function-and-Gaussian-kernels"><span class="nav-number">6.2.</span> <span class="nav-text">Radial Basis Function and Gaussian kernels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-kernels"><span class="nav-number">6.3.</span> <span class="nav-text">Other kernels</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MULTIPLE-CHANNELS"><span class="nav-number">7.</span> <span class="nav-text">MULTIPLE CHANNELS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#General-case"><span class="nav-number">7.1.</span> <span class="nav-text">General case</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linear-kernel"><span class="nav-number">7.2.</span> <span class="nav-text">Linear kernel</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EXPERIMENTS"><span class="nav-number">8.</span> <span class="nav-text">EXPERIMENTS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tracking-pipeline"><span class="nav-number">8.1.</span> <span class="nav-text">Tracking pipeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluation"><span class="nav-number">8.2.</span> <span class="nav-text">Evaluation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments-on-the-full-dataset"><span class="nav-number">8.3.</span> <span class="nav-text">Experiments on the full dataset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments-with-sequence-attributes"><span class="nav-number">8.4.</span> <span class="nav-text">Experiments with sequence attributes</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CONCLUSIONS-AND-FUTURE-WORK"><span class="nav-number">9.</span> <span class="nav-text">CONCLUSIONS AND FUTURE WORK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ACKNOWLEDGMENT"><span class="nav-number">10.</span> <span class="nav-text">ACKNOWLEDGMENT</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#APPENDIX-A"><span class="nav-number">11.</span> <span class="nav-text">APPENDIX A</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#A-1-Implementation-details"><span class="nav-number">11.1.</span> <span class="nav-text">A.1 Implementation details</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-2-Proof-of-Theorem-1"><span class="nav-number">11.2.</span> <span class="nav-text">A.2 Proof of Theorem 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-3-Kernel-Ridge-Regression-with-Circulant-data"><span class="nav-number">11.3.</span> <span class="nav-text">A.3 Kernel Ridge Regression with Circulant data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-4-Derivation-of-fast-detection-formula"><span class="nav-number">11.4.</span> <span class="nav-text">A.4 Derivation of fast detection formula</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-5-Linear-Ridge-Regression-with-Circulant-data"><span class="nav-number">11.5.</span> <span class="nav-text">A.5 Linear Ridge Regression with Circulant data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#A-6-MOSSE-filter"><span class="nav-number">11.6.</span> <span class="nav-text">A.6 MOSSE filter</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sarieli</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">35.8k</span>
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  访问人数 <span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<span id="busuanzi_container_site_pv">
+  总阅读量 <span id="busuanzi_value_site_pv"></span>
+</span>
+
+<!--
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+-->
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9KDsTY6EkCBGjRausf1kf6LC-gzGzoHsz", "1VTtq7tsYmHGToQSADoWzFy3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.staticfile.org/MathJax/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
